@@ -5,6 +5,7 @@
   "description": "IM service front-end of admin.",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
+    "dev": "umi dev",
     "build": "umi build",
     "deploy": "npm run site && npm run gh-pages",
     "fetch:blocks": "pro fetch-blocks && npm run prettier",
