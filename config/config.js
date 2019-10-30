@@ -1,7 +1,8 @@
+import slash from 'slash2';
 import defaultSettings from './defaultSettings'; // https://umijs.org/config/
 
-import slash from 'slash2';
 import webpackPlugin from './plugin.config';
+
 const { pwa, primaryColor } = defaultSettings; // preview.pro.ant.design only do not use in your production ;
 // preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
 
@@ -71,6 +72,8 @@ export default {
     defaultGitUrl: 'https://github.com/ant-design/pro-blocks',
   },
   hash: true,
+  base: '/admin/',
+  publicPath: '/admin/',
   targets: {
     ie: 11,
   },
