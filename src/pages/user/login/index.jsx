@@ -6,7 +6,7 @@ import { connect } from 'dva';
 import LoginComponents from './components/Login';
 import styles from './style.less';
 
-const { Tab, UserName, Password, Mobile, Captcha, Submit } = LoginComponents;
+const { Tab, UserName, Password, Submit } = LoginComponents;
 
 @connect(({ login, loading }) => ({
   userLogin: login,
@@ -27,9 +27,11 @@ class Login extends Component {
   };
 
   handleSubmit = (err, values) => {
+    console.log('handleSubmit');
     const { type } = this.state;
 
     if (!err) {
+      console.log('34');
       const { dispatch } = this.props;
       dispatch({
         type: 'login/login',
@@ -112,7 +114,7 @@ class Login extends Component {
               name="userName"
               placeholder={`${formatMessage({
                 id: 'user-login.login.userName',
-              })}: admin or user`}
+              })}: admin`}
               rules={[
                 {
                   required: true,
@@ -126,7 +128,7 @@ class Login extends Component {
               name="password"
               placeholder={`${formatMessage({
                 id: 'user-login.login.password',
-              })}: ant.design`}
+              })}: admin`}
               rules={[
                 {
                   required: true,
@@ -142,63 +144,6 @@ class Login extends Component {
                   this.loginForm.validateFields(this.handleSubmit);
                 }
               }}
-            />
-          </Tab>
-          <Tab
-            key="mobile"
-            tab={formatMessage({
-              id: 'user-login.login.tab-login-mobile',
-            })}
-          >
-            {status === 'error' &&
-              loginType === 'mobile' &&
-              !submitting &&
-              this.renderMessage(
-                formatMessage({
-                  id: 'user-login.login.message-invalid-verification-code',
-                }),
-              )}
-            <Mobile
-              name="mobile"
-              placeholder={formatMessage({
-                id: 'user-login.phone-number.placeholder',
-              })}
-              rules={[
-                {
-                  required: true,
-                  message: formatMessage({
-                    id: 'user-login.phone-number.required',
-                  }),
-                },
-                {
-                  pattern: /^1\d{10}$/,
-                  message: formatMessage({
-                    id: 'user-login.phone-number.wrong-format',
-                  }),
-                },
-              ]}
-            />
-            <Captcha
-              name="captcha"
-              placeholder={formatMessage({
-                id: 'user-login.verification-code.placeholder',
-              })}
-              countDown={120}
-              onGetCaptcha={this.onGetCaptcha}
-              getCaptchaButtonText={formatMessage({
-                id: 'user-login.form.get-captcha',
-              })}
-              getCaptchaSecondText={formatMessage({
-                id: 'user-login.captcha.second',
-              })}
-              rules={[
-                {
-                  required: true,
-                  message: formatMessage({
-                    id: 'user-login.verification-code.required',
-                  }),
-                },
-              ]}
             />
           </Tab>
           <div>
@@ -219,9 +164,7 @@ class Login extends Component {
           </Submit>
           <div className={styles.other}>
             <FormattedMessage id="user-login.login.sign-in-with" />
-            <Icon type="alipay-circle" className={styles.icon} theme="outlined" />
-            <Icon type="taobao-circle" className={styles.icon} theme="outlined" />
-            <Icon type="weibo-circle" className={styles.icon} theme="outlined" />
+            <Icon type="github" className={styles.icon} theme="outlined" />
             <Link className={styles.register} to="/user/register">
               <FormattedMessage id="user-login.login.signup" />
             </Link>
