@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
 import SelectLang from '@/components/SelectLang';
-import logo from '../assets/logo.svg';
+// import logo from '../assets/logo.svg';
 import styles from './UserLayout.less';
 
 const UserLayout = props => {
@@ -39,11 +39,11 @@ const UserLayout = props => {
           <div className={styles.top}>
             <div className={styles.header}>
               <Link to="/">
-                <img alt="logo" className={styles.logo} src={logo} />
-                <span className={styles.title}>Ant Design</span>
+                {/* <img alt="logo" className={styles.logo} src={logo} />
+                <span className={styles.title}>Ant Design</span> */}
               </Link>
             </div>
-            <div className={styles.desc}>Ant Design 是西湖区最具影响力的 Web 设计规范</div>
+            <div className={styles.desc}>IM-server 管理端</div>
           </div>
           {children}
         </div>
