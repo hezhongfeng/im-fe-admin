@@ -72,8 +72,6 @@ export default {
     defaultGitUrl: 'https://github.com/ant-design/pro-blocks',
   },
   hash: true,
-  base: '/admin/',
-  publicPath: '/admin/',
   targets: {
     ie: 11,
   },
