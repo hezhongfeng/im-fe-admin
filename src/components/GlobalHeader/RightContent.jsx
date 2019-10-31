@@ -4,7 +4,6 @@ import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
 import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
-import SelectLang from '../SelectLang';
 import styles from './index.less';
 
 const GlobalHeaderRight = props => {
@@ -56,7 +55,6 @@ const GlobalHeaderRight = props => {
         </a>
       </Tooltip>
       <Avatar />
-      <SelectLang className={styles.action} />
     </div>
   );
 };
