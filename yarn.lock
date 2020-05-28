@@ -90,10 +90,10 @@
     use-merge-value "^1.0.1"
     warning "^4.0.3"
 
-"@ant-design/pro-layout@6.0.0-2":
-  version "6.0.0-2"
-  resolved "https://registry.yarnpkg.com/@ant-design/pro-layout/-/pro-layout-6.0.0-2.tgz#f6af2773ccc3cd42054d69aa63438a48407768ee"
-  integrity sha512-8jgP6wcTAVabefKCnDZZwbPZ+Q96dsGSVHWh+gAovjJUGvbh7pDArLLe9JHLjbuUB3fPSPVhig/C05qCCToT/A==
+"@ant-design/pro-layout@6.0.0-4":
+  version "6.0.0-4"
+  resolved "https://registry.npm.taobao.org/@ant-design/pro-layout/download/@ant-design/pro-layout-6.0.0-4.tgz#ef6a4d8a24ae43d9d571741c2f7c1ca741b651d2"
+  integrity sha1-72pNiiSuQ9nVcXQcL3wcp0G2UdI=
   dependencies:
     "@ant-design/icons" "^4.0.0"
     "@umijs/route-utils" "^1.0.5"
@@ -116,10 +116,10 @@
     use-merge-value "^1.0.1"
     warning "^4.0.3"
 
-"@ant-design/pro-table@^2.2.9":
-  version "2.2.9"
-  resolved "https://registry.yarnpkg.com/@ant-design/pro-table/-/pro-table-2.2.9.tgz#94bdb92899b5f43a4bff4015a2b3e2945174afff"
-  integrity sha512-sPcadT5N2oR4AGnE+t7p7AqqKly492W8xRow/k/Wo9AbpUJuiZRoKBWW5SkDfxpf/c+iLlFy0aIvfpD6p0mpDA==
+"@ant-design/pro-table@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.npm.taobao.org/@ant-design/pro-table/download/@ant-design/pro-table-2.3.1.tgz#d586837125f035d08e4967fde1932b910d770c02"
+  integrity sha1-1YaDcSXwNdCOSWf94ZMrkQ13DAI=
   dependencies:
     "@ant-design/icons" "^4.1.0"
     antd "^4.1.5"
@@ -17918,10 +17918,18 @@ umi-plugin-pro-block@^2.0.1:
   dependencies:
     debug "^4.1.0"
 
-umi-request@^1.2.14, umi-request@^1.2.17, umi-request@^1.3.1:
+umi-request@^1.2.14, umi-request@^1.2.17:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/umi-request/-/umi-request-1.3.1.tgz#ae64c757082fd9f16c76ac0b3adb373d1dfc4de2"
   integrity sha512-lIw7yCdeLzrpgDkFBNKzthA+EY+W+qNISXIybRReQa/CjFSVRskjfHHlHRhx/i2+W4u4+ea+AoO7rxcvdfLk4w==
+  dependencies:
+    isomorphic-fetch "^2.2.1"
+    qs "^6.9.1"
+
+umi-request@^1.3.3:
+  version "1.3.3"
+  resolved "https://registry.npm.taobao.org/umi-request/download/umi-request-1.3.3.tgz#9f053a3bbf7c8e89765ca8e3c0118f1cb8481f11"
+  integrity sha1-nwU6O798jol2XKjjwBGPHLhIHxE=
   dependencies:
     isomorphic-fetch "^2.2.1"
     qs "^6.9.1"
