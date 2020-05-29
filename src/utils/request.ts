@@ -1,48 +1,9 @@
-import React from 'react';
-import { BasicLayoutProps, Settings as LayoutSettings } from '@ant-design/pro-layout';
-
+/**
+ * request 网络请求工具
+ * 更详细的 api 文档: https://github.com/umijs/umi-request
+ */
+import { extend } from 'umi-request';
 import { notification } from 'antd';
-import { history, RequestConfig } from 'umi';
-import RightContent from '@/components/RightContent';
-import Footer from '@/components/Footer';
-import { queryCurrent } from './services/user';
-
-import defaultSettings from '../config/defaultSettings';
-
-export async function getInitialState(): Promise<{
-  currentUser?: API.CurrentUser;
-  settings?: LayoutSettings;
-}> {
-  // 如果是登录页面，不执行
-  if (history.location.pathname !== '/user/login') {
-    try {
-      const currentUser = await queryCurrent();
-      return {
-        currentUser,
-        settings: defaultSettings,
-      };
-    } catch (error) {
-      history.push('/user/login');
-    }
-  }
-  return {
-    settings: defaultSettings,
-  };
-}
-
-export const layout = ({
-  initialState,
-}: {
-  initialState: { settings?: LayoutSettings };
-}): BasicLayoutProps => {
-  return {
-    rightContentRender: () => <RightContent />,
-    disableContentMargin: false,
-    footerRender: () => <Footer />,
-    menuHeaderRender: undefined,
-    ...initialState?.settings,
-  };
-};
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -65,7 +26,7 @@ const codeMessage = {
 /**
  * 异常处理程序
  */
-const errorHandler = (error: { response: Response }) => {
+const errorHandler = (error: { response: Response }): Response => {
   const { response } = error;
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
@@ -75,17 +36,21 @@ const errorHandler = (error: { response: Response }) => {
       message: `请求错误 ${status}: ${url}`,
       description: errorText,
     });
-  }
-
-  if (!response) {
+  } else if (!response) {
     notification.error({
       description: '您的网络发生异常，无法连接服务器',
       message: '网络异常',
     });
   }
-  throw error;
+  return response;
 };
 
-export const request: RequestConfig = {
-  errorHandler,
-};
+/**
+ * 配置request请求时的默认参数
+ */
+const request = extend({
+  errorHandler, // 默认错误处理
+  credentials: 'include', // 默认请求是否带上cookie
+});
+
+export default request;

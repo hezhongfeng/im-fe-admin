@@ -14,17 +14,20 @@
 .right {
   display: flex;
   float: right;
-  height: 48px;
+  height: @layout-header-height;
   margin-left: auto;
   overflow: hidden;
   .action {
     display: flex;
     align-items: center;
-    height: 48px;
+    height: 100%;
     padding: 0 12px;
     cursor: pointer;
     transition: all 0.3s;
-
+    > span {
+      color: @text-color;
+      vertical-align: middle;
+    }
     &:hover {
       background: @pro-header-hover-bg;
     }
@@ -40,6 +43,7 @@
   }
   .account {
     .avatar {
+      margin: ~'calc((@{layout-header-height} - 24px) / 2)' 0;
       margin-right: 8px;
       color: @primary-color;
       vertical-align: top;
@@ -50,11 +54,30 @@
 
 .dark {
   .action {
-    &:hover {
-      background: #252a3d;
+    color: rgba(255, 255, 255, 0.85);
+    > span {
+      color: rgba(255, 255, 255, 0.85);
     }
+    &:hover,
     &:global(.opened) {
-      background: #252a3d;
+      background: @primary-color;
+    }
+  }
+}
+
+:global(.ant-pro-global-header) {
+  .dark {
+    .action {
+      color: @text-color;
+      > span {
+        color: @text-color;
+      }
+      &:hover {
+        color: rgba(255, 255, 255, 0.85);
+        > span {
+          color: rgba(255, 255, 255, 0.85);
+        }
+      }
     }
   }
 }

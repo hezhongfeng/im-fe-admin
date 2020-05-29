@@ -2,6 +2,7 @@ import { Avatar, List } from 'antd';
 
 import React from 'react';
 import classNames from 'classnames';
+import { NoticeIconData } from './index';
 import styles from './NoticeList.less';
 
 export interface NoticeIconTabProps {
@@ -12,16 +13,17 @@ export interface NoticeIconTabProps {
   style?: React.CSSProperties;
   title: string;
   tabKey: string;
-  onClick?: (item: API.NoticeIconData) => void;
+  data?: NoticeIconData[];
+  onClick?: (item: NoticeIconData) => void;
   onClear?: () => void;
   emptyText?: string;
   clearText?: string;
   viewMoreText?: string;
-  list: API.NoticeIconData[];
+  list: NoticeIconData[];
   onViewMore?: (e: any) => void;
 }
-const NoticeList: React.FC<NoticeIconTabProps> = ({
-  list = [],
+const NoticeList: React.SFC<NoticeIconTabProps> = ({
+  data = [],
   onClick,
   onClear,
   title,
@@ -32,7 +34,7 @@ const NoticeList: React.FC<NoticeIconTabProps> = ({
   viewMoreText,
   showViewMore = false,
 }) => {
-  if (!list || list.length === 0) {
+  if (!data || data.length === 0) {
     return (
       <div className={styles.notFound}>
         <img
@@ -45,9 +47,9 @@ const NoticeList: React.FC<NoticeIconTabProps> = ({
   }
   return (
     <div>
-      <List<API.NoticeIconData>
+      <List<NoticeIconData>
         className={styles.list}
-        dataSource={list}
+        dataSource={data}
         renderItem={(item, i) => {
           const itemCls = classNames(styles.item, {
             [styles.read]: item.read,
@@ -64,7 +66,7 @@ const NoticeList: React.FC<NoticeIconTabProps> = ({
           return (
             <List.Item
               className={itemCls}
-              key={item.id || i}
+              key={item.key || i}
               onClick={() => onClick && onClick(item)}
             >
               <List.Item.Meta

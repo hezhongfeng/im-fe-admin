@@ -1,7 +1,7 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Divider, Dropdown, Menu, message, Input } from 'antd';
 import React, { useState, useRef } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { SorterResult } from 'antd/es/table/interface';
 
@@ -151,7 +151,7 @@ const TableList: React.FC<{}> = () => {
   ];
 
   return (
-    <PageContainer>
+    <PageHeaderWrapper>
       <ProTable<TableListItem>
         headerTitle="查询表格"
         actionRef={actionRef}
@@ -241,7 +241,7 @@ const TableList: React.FC<{}> = () => {
           values={stepFormValues}
         />
       ) : null}
-    </PageContainer>
+    </PageHeaderWrapper>
   );
 };
 

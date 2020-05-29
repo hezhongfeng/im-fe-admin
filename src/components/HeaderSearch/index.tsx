@@ -74,11 +74,14 @@ const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
         key="AutoComplete"
         className={inputClass}
         value={value}
+        style={{
+          height: 28,
+          marginTop: -6,
+        }}
         options={restProps.options}
         onChange={setValue}
       >
         <Input
-          size="small"
           ref={inputRef}
           defaultValue={defaultValue}
           aria-label={placeholder}

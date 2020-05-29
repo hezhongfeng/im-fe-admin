@@ -1,12 +1,18 @@
-import { Tooltip, Tag, Space } from 'antd';
+import { Tooltip, Tag } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import React from 'react';
-import { useModel, SelectLang } from 'umi';
+import { connect, ConnectProps } from 'umi';
+import { ConnectState } from '@/models/connect';
 import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
+import SelectLang from '../SelectLang';
 import styles from './index.less';
 
 export type SiderTheme = 'light' | 'dark';
+export interface GlobalHeaderRightProps extends Partial<ConnectProps> {
+  theme?: SiderTheme | 'realDark';
+  layout: 'sidemenu' | 'topmenu';
+}
 
 const ENVTagColor = {
   dev: 'orange',
@@ -14,21 +20,16 @@ const ENVTagColor = {
   pre: '#87d068',
 };
 
-const GlobalHeaderRight: React.FC<{}> = () => {
-  const { initialState } = useModel('@@initialState');
-
-  if (!initialState || !initialState.settings) {
-    return null;
-  }
-
-  const { navTheme, layout } = initialState.settings;
+const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = (props) => {
+  const { theme, layout } = props;
   let className = styles.right;
 
-  if ((navTheme === 'dark' && layout === 'top') || layout === 'mix') {
+  if (theme === 'dark' && layout === 'topmenu') {
     className = `${styles.right}  ${styles.dark}`;
   }
+
   return (
-    <Space className={className}>
+    <div className={className}>
       <HeaderSearch
         className={`${styles.action} ${styles.search}`}
         placeholder="站内搜索"
@@ -53,14 +54,14 @@ const GlobalHeaderRight: React.FC<{}> = () => {
         // }}
       />
       <Tooltip title="使用文档">
-        <span
+        <a
+          target="_blank"
+          href="https://pro.ant.design/docs/getting-started"
+          rel="noopener noreferrer"
           className={styles.action}
-          onClick={() => {
-            window.location.href = 'https://pro.ant.design/docs/getting-started';
-          }}
         >
           <QuestionCircleOutlined />
-        </span>
+        </a>
       </Tooltip>
       <Avatar />
       {REACT_APP_ENV && (
@@ -69,7 +70,11 @@ const GlobalHeaderRight: React.FC<{}> = () => {
         </span>
       )}
       <SelectLang className={styles.action} />
-    </Space>
+    </div>
   );
 };
-export default GlobalHeaderRight;
+
+export default connect(({ settings }: ConnectState) => ({
+  theme: settings.navTheme,
+  layout: settings.layout,
+}))(GlobalHeaderRight);
