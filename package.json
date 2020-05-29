@@ -30,14 +30,32 @@
     "test": "umi test",
     "test:all": "node ./tests/run-tests.js",
     "test:component": "umi test ./src/components",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "cz": "git-cz"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint-staged",
+      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   },
   "lint-staged": {
     "**/*.less": "stylelint --syntax less",
     "**/*.{js,jsx,ts,tsx}": "npm run lint-staged:js",
-    "**/*.{js,jsx,tsx,ts,less,md,json}": ["prettier --write"]
+    "**/*.{js,jsx,tsx,ts,less,md,json}": [
+      "prettier --write"
+    ]
   },
-  "browserslist": ["> 1%", "last 2 versions", "not ie <= 10"],
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ],
   "dependencies": {
     "@ant-design/icons": "^4.0.0",
     "@ant-design/pro-layout": "^5.0.8",
@@ -58,6 +76,8 @@
   },
   "devDependencies": {
     "@ant-design/pro-cli": "^1.0.18",
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
     "@types/classnames": "^2.2.7",
     "@types/express": "^4.17.0",
     "@types/history": "^4.7.2",
@@ -74,14 +94,16 @@
     "@umijs/preset-ui": "^2.0.9",
     "carlo": "^0.9.46",
     "chalk": "^4.0.0",
+    "commitizen": "^4.1.2",
     "cross-env": "^7.0.0",
     "cross-port-killer": "^1.1.1",
+    "cz-conventional-changelog": "^3.2.0",
     "detect-installer": "^1.0.1",
     "enzyme": "^3.11.0",
     "eslint": "^6.8.0",
     "express": "^4.17.1",
     "gh-pages": "^2.0.1",
-    "husky": "^4.0.7",
+    "husky": "^4.2.5",
     "jsdom-global": "^3.0.2",
     "lint-staged": "^10.0.0",
     "mockjs": "^1.0.1-beta3",
@@ -90,7 +112,9 @@
     "puppeteer-core": "^3.0.0",
     "stylelint": "^13.0.0"
   },
-  "engines": { "node": ">=10.0.0" },
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "license": "MIT",
   "checkFiles": [
     "src/**/*.js*",
