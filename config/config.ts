@@ -28,22 +28,22 @@ export default defineConfig({
   routes: [
     {
       path: '/user',
-      component: '../layouts/UserLayout',
+      component: '@/layouts/UserLayout',
       routes: [
         {
           name: 'login',
           path: '/user/login',
-          component: './user/login',
+          component: '@/pages/user/login',
         },
       ],
     },
     {
       path: '/',
-      component: '../layouts/SecurityLayout',
+      component: '@/layouts/SecurityLayout',
       routes: [
         {
           path: '/',
-          component: '../layouts/BasicLayout',
+          component: '@/layouts/BasicLayout',
           authority: ['admin', 'user'],
           routes: [
             {
@@ -54,20 +54,20 @@ export default defineConfig({
               path: '/welcome',
               name: 'welcome',
               icon: 'smile',
-              component: './Welcome',
+              component: '@/pages/Welcome',
             },
             {
               path: '/admin',
               name: 'admin',
               icon: 'crown',
-              component: './Admin',
+              component: '@/pages/Admin',
               authority: ['admin'],
               routes: [
                 {
                   path: '/admin/sub-page',
                   name: 'sub-page',
                   icon: 'smile',
-                  component: './Welcome',
+                  component: '@/pages/Welcome',
                   authority: ['admin'],
                 },
               ],
@@ -76,15 +76,15 @@ export default defineConfig({
               name: 'list.table-list',
               icon: 'table',
               path: '/list',
-              component: './ListTableList',
+              component: '@/pages/ListTableList',
             },
             {
-              component: './404',
+              component: '@/pages/404',
             },
           ],
         },
         {
-          component: './404',
+          component: '@/pages/404',
         },
       ],
     },
