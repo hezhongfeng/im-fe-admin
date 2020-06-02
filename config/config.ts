@@ -73,12 +73,6 @@ export default defineConfig({
               ],
             },
             {
-              name: 'list.table-list',
-              icon: 'table',
-              path: '/list',
-              component: '@/pages/ListTableList',
-            },
-            {
               component: '@/pages/404',
             },
           ],

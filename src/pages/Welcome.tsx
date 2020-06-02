@@ -2,6 +2,7 @@ import React from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { Card, Typography, Alert } from 'antd';
 import styles from './Welcome.less';
+import TableBasic from './TableBasic';
 
 const CodePreview: React.FC<{}> = ({ children }) => (
   <pre className={styles.pre}>
@@ -13,6 +14,7 @@ const CodePreview: React.FC<{}> = ({ children }) => (
 
 export default (): React.ReactNode => (
   <PageHeaderWrapper>
+    <TableBasic />
     <Card>
       <Alert
         message="umi ui 现已发布，点击右下角 umi 图标即可使用"
