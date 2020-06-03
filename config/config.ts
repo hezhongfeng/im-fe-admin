@@ -66,6 +66,12 @@ export default defineConfig({
                   authority: ['admin'],
                   component: './ListBasicList',
                 },
+                {
+                  path: '/admin/list',
+                  name: 'list-page',
+                  authority: ['admin'],
+                  component: './table-list',
+                },
               ],
             },
             {
