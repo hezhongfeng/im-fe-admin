@@ -56,30 +56,9 @@ export default defineConfig({
               component: '@/pages/Welcome',
             },
             {
-              path: '/admin',
-              name: 'admin',
-              icon: 'crown',
-              component: './Admin',
-              authority: ['admin'],
-              routes: [
-                {
-                  path: '/admin/sub-page',
-                  name: 'sub-page',
-                  authority: ['admin'],
-                  component: './ListBasicList',
-                },
-                // {
-                //   path: '/admin/list',
-                //   name: 'list-page',
-                //   authority: ['admin'],
-                //   component: './table-list',
-                // },
-              ],
-            },
-            {
-              name: 'list.table-list',
+              name: 'admin.group',
               icon: 'table',
-              path: '/list',
+              path: '/group',
               component: '@/pages/ListTableList',
             },
             {
