@@ -3,6 +3,7 @@ import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 const { REACT_APP_ENV } = process.env;
+
 export default defineConfig({
   hash: true,
   antd: {},
@@ -79,7 +80,7 @@ export default defineConfig({
               name: 'list.table-list',
               icon: 'table',
               path: '/list',
-              component: './ListTableList',
+              component: '@/pages/ListTableList',
             },
             {
               component: '@/pages/404',
@@ -92,7 +93,7 @@ export default defineConfig({
       ],
     },
     {
-      component: './404',
+      component: '@/pages/404',
     },
   ],
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
