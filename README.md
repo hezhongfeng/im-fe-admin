@@ -66,7 +66,7 @@ You can view full document on our [official website](https://pro.ant.design). An
 
 ## dva
 
-这个是必须要介绍的内容，因为`pro`里面到处充斥着`connect`这样的写法
+这个是必须要介绍的内容，因为`pro`里面到处充斥着`connect`这样的写法，看起来一脸懵逼
 
 官方的解释是`dva = React-Router + Redux + Redux-saga`，在我看来这个东西就属于一个路由+状态管理，只不过这个状态管理不好理解，这时候感觉 React 没有官方的工具就显得轮子多了，据我所知就有好几种状态管理的方案，有选择困难症的同学压力很大。
 
@@ -78,12 +78,22 @@ model 中有一个全局的 namespace，这个让我感觉到了和 vuex 的不�
 
 ### connect
 
-model 和 Vuex 是很相似的，容易理解，connect 这个概念是以前没有遇到过的。 让我第一时间看不明白，在去查看了 redux 的文档过后，我知道了是把 model 中的 state 通过 props 的方式传递给 component ，然后 component 通过 dispatch 来更新 state。
+model 和 Vuex 是很相似的，容易理解，connect 这个概念是以前没有遇到过的。 我第一时间看不明白，在去查看了 redux 的文档过后，我知道了是把 model 中的 state 通过 props 的方式传递给 component ，然后 component 通过 dispatch 来更新 state，注意这里一般都是页面级的 Component，由页面级的继续把 state 分发给纯组件。
+
+下面分析下`src/pages/user/login/index.tsx`最后的 connect
 
 ```
-export default connect(({ products }) => ({
-  products,
-}))(Products);
+export default connect(({ login, loading }: ConnectState) => ({
+  userLogin: login,
+  submitting: loading.effects['login/login'],
+}))(Login);
+```
+
+`login, loading`属于全局下的 dva state，然后通过`userLogin`和`submitting`注入到了`Login`组件中，供组件使用，下面就是在组件中通过 props 获取 connect 传进来的状态数据
+
+```
+  const { userLogin = {}, submitting } = props;
+  const { status, type: loginType } = userLogin;
 ```
 
 ## layouts
