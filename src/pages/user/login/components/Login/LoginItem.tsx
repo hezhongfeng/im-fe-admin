@@ -49,7 +49,7 @@ const getFormItemOptions = ({
 };
 
 const LoginItem: React.FC<LoginItemProps> = (props) => {
-  // 这么写是为了防止restProps中 带入 onChange, defaultValue, rules props tabUtil
+  // 这么写是为了防止restProps中 带入 onChange, defaultValue, rules props
   const { onChange, customProps, defaultValue, rules, name, type, ...restProps } = props;
 
   if (!name) {
