@@ -93,6 +93,7 @@ const TableList: React.FC<{}> = () => {
       title: '描述',
       dataIndex: 'desc',
       valueType: 'textarea',
+      hideInSearch: true,
     },
     {
       title: '服务调用次数',
@@ -100,6 +101,7 @@ const TableList: React.FC<{}> = () => {
       sorter: true,
       hideInForm: true,
       renderText: (val: string) => `${val} 万`,
+      hideInSearch: true,
     },
     {
       title: '状态',
@@ -118,6 +120,7 @@ const TableList: React.FC<{}> = () => {
       sorter: true,
       valueType: 'dateTime',
       hideInForm: true,
+      hideInSearch: true,
       renderFormItem: (item, { defaultRender, ...rest }, form) => {
         const status = form.getFieldValue('status');
         if (`${status}` === '0') {
