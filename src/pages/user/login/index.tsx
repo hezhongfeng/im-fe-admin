@@ -35,7 +35,7 @@ const LoginMessage: React.FC<{
 
 const Login: React.FC<LoginProps> = (props) => {
   const { userLogin = {}, submitting } = props;
-  const { status, type: loginType } = userLogin;
+  const { status, errorMessage } = userLogin;
   const [autoLogin, setAutoLogin] = useState(true);
 
   const handleSubmit = (values: LoginParamsType) => {
@@ -48,9 +48,7 @@ const Login: React.FC<LoginProps> = (props) => {
   return (
     <div className={styles.main}>
       <LoginForm onSubmit={handleSubmit}>
-        {status === 'error' && loginType === 'account' && !submitting && (
-          <LoginMessage content="账户或密码错误（admin/ant.design）" />
-        )}
+        {status === '1' && !submitting && errorMessage && <LoginMessage content={errorMessage} />}
         <UserName
           name="username"
           placeholder="用户名: admin or user"

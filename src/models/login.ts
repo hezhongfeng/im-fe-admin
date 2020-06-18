@@ -1,13 +1,11 @@
-import { stringify } from 'querystring';
 import { history, Reducer, Effect } from 'umi';
 
 import { fakeAccountLogin } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
-import { getPageQuery } from '@/utils/utils';
 
 export interface StateType {
-  status?: 'ok' | 'error';
-  type?: string;
+  status?: '0' | '1';
+  errorMessage?: string;
   currentAuthority?: 'user' | 'guest' | 'admin';
 }
 
@@ -39,46 +37,27 @@ const Model: LoginModelType = {
       });
       // Login successfully
       if (response.statusCode === '0') {
-        const urlParams = new URL(window.location.href);
-        const params = getPageQuery();
-        let { redirect } = params as { redirect: string };
-        if (redirect) {
-          const redirectUrlParams = new URL(redirect);
-          if (redirectUrlParams.origin === urlParams.origin) {
-            redirect = redirect.substr(urlParams.origin.length);
-            if (redirect.match(/^\/.*#/)) {
-              redirect = redirect.substr(redirect.indexOf('#') + 1);
-            }
-          } else {
-            window.location.href = '/';
-            return;
-          }
-        }
-        history.replace(redirect || '/');
+        history.replace('/');
       }
     },
 
     logout() {
-      const { redirect } = getPageQuery();
-      // Note: There may be security issues, please note
-      if (window.location.pathname !== '/user/login' && !redirect) {
-        history.replace({
-          pathname: '/user/login',
-          search: stringify({
-            redirect: window.location.href,
-          }),
-        });
-      }
+      history.replace({
+        pathname: '/user/login',
+      });
     },
   },
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
+      if (payload.roles) {
+        setAuthority(payload.roles[0].keyName);
+      }
+
       return {
         ...state,
-        status: payload.status,
-        type: payload.type,
+        status: payload.statusCode,
+        errorMessage: payload.errorMessage,
       };
     },
   },

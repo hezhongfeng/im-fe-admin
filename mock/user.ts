@@ -77,37 +77,51 @@ export default {
       address: 'Sidney No. 1 Lake Park',
     },
   ],
-  'POST /api/login/account': (req: Request, res: Response) => {
-    const { password, userName, type } = req.body;
-    if (password === 'ant.design' && userName === 'admin') {
-      res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'admin',
-      });
+  'POST /api/v1/login': (req: Request, res: Response) => {
+    const { password, username } = req.body;
+    if (username === 'admin') {
+      if (password === '123456') {
+        res.send({
+          statusCode: '0',
+          roles: [
+            {
+              keyName: 'admin',
+            },
+          ],
+          errorMessage: 'admin',
+        });
+      } else {
+        res.send({
+          statusCode: '1',
+          errorMessage: '密码错误',
+        });
+      }
       return;
     }
-    if (password === 'ant.design' && userName === 'user') {
-      res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'user',
-      });
-      return;
-    }
-    if (type === 'mobile') {
-      res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'admin',
-      });
+
+    if (username === 'user') {
+      if (password === '123456') {
+        res.send({
+          statusCode: '0',
+          roles: [
+            {
+              keyName: 'user',
+            },
+          ],
+          errorMessage: 'user',
+        });
+      } else {
+        res.send({
+          statusCode: '1',
+          errorMessage: '密码错误',
+        });
+      }
       return;
     }
 
     res.send({
-      status: 'error',
-      type,
-      currentAuthority: 'guest',
+      statusCode: '1',
+      errorMessage: '用户名错误',
     });
   },
   'POST /api/register': (req: Request, res: Response) => {
