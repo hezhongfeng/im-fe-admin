@@ -52,7 +52,7 @@ const Login: React.FC<LoginProps> = (props) => {
           <LoginMessage content="账户或密码错误（admin/ant.design）" />
         )}
         <UserName
-          name="userName"
+          name="username"
           placeholder="用户名: admin or user"
           rules={[
             {
