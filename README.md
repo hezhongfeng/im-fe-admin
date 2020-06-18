@@ -76,6 +76,33 @@ You can view full document on our [official website](https://pro.ant.design). An
 
 model 中有一个全局的 namespace，这个让我感觉到了和 vuex 的不同，Vue 项目中只有很少的一部分会用到全局的数据（比如用户登录信息），而 dva 的理想状态下是所有页面的状态都放在全局下，统一管理，这个确实比 Vue 的方式要统一一些，不过代价不小，如果我们目前的项目页面状态都采用这种方式的话，应该会很难受。
 
+#### state
+
+就是一份 Model 的状态数据，通常表现为一个 javascript 对象（当然它可以是任何值）,操作的时候每次都要当作不可变数据（immutable data）来对待，保证每次都是全新对象，没有引用关系，这样才能保证 State 的独立性，便于测试和追踪变化。
+
+#### dispatch
+
+这个概念也比较容易理解，就是通过 dispatch 发起一个 action，这个 action 有两种，分为同步的 Reducers 和异步的 Effects(副作用），effects 流向 Reducers 最终改变 State。
+
+#### subscription
+
+订阅现在使用的比较少，没有搞懂具体使用场景。
+
+#### effects
+
+处理异步操作和业务逻辑，较常用的是 call 、 put 和 select
+
+- call 用来发起异步逻辑的调用，比如 IO 操作或者 http 请求
+- put 是用来触发 action 更新 state 的
+- select 用于从 state 里获取数据
+
+```
+yield put({ type: 'todos/add', payload: 'Learn Dva' });
+const result = yield call(fetch, '/todos');
+const todos = yield select(state => state.todos);
+
+```
+
 ### connect
 
 model 和 Vuex 是很相似的，容易理解，connect 这个概念是以前没有遇到过的。 我第一时间看不明白，在去查看了 redux 的文档过后，我知道了是把 model 中的 state 通过 props 的方式传递给 component ，然后 component 通过 dispatch 来更新 state，注意这里一般都是页面级的 Component，由页面级的继续把 state 分发给纯组件。
@@ -95,6 +122,8 @@ export default connect(({ login, loading }: ConnectState) => ({
   const { userLogin = {}, submitting } = props;
   const { status, type: loginType } = userLogin;
 ```
+
+![](https://i.loli.net/2020/06/18/JbBjWrUspduwRym.png)
 
 ## layouts
 

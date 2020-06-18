@@ -99,5 +99,5 @@ const Login: React.FC<LoginProps> = (props) => {
 
 export default connect(({ login, loading }: ConnectState) => ({
   userLogin: login,
-  submitting: loading.effects['login/login'], // 这里我猜想是这个effect在执行的时候就会返回true，一般的时候都会死false，然后可以显示错误信息和loading登录
+  submitting: loading.effects['login/login'], // 这里我猜想是这个effect在执行的时候就会返回true，一般的时候都会是false，然后可以显示错误信息和loading登录
 }))(Login);
