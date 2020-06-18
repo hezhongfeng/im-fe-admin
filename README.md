@@ -125,6 +125,68 @@ export default connect(({ login, loading }: ConnectState) => ({
 
 ![](https://i.loli.net/2020/06/18/JbBjWrUspduwRym.png)
 
+## login
+
+下面我将详细的分析一下 login 页面组件，为了简洁以下我已经把快捷登录和 tab 切换相关内容去掉了。
+
+### LoginForm
+
+首先看 login 页面组件 return 回来的组件，里面是 div 包裹着一个 LoginForm，然后只有一个事件绑定 onSubmit，就是提交事件。处理提交事件的回调是 handleSubmit，这个函数的参数格式有如下要求：
+
+```
+export interface LoginParamsType {
+  userName: string;
+  password: string;
+}
+```
+
+这些数据又通过 dispatch 发送给了 `login/login`，这个 action 是一个 effect，登录验证是异步的，在 `src/models/login.ts`下可以找到 effect 的详情
+
+```
+  *login({ payload }, { call, put }) {
+    const response = yield call(fakeAccountLogin, payload);
+    yield put({
+      type: 'changeLoginStatus',
+      payload: response,
+    });
+    // Login successfully
+    if (response.status === 'ok') {
+      // ...
+    }
+  },
+```
+
+这里是从整体看了下 LoginForm 这个组件，他的作用目前看就是处理提交事件，至于 onSubmit 这个事件是怎么触发的，我们可以查看到 是通过 antd 的组件 form 发起的 onFinish 事件，值的 key 就取自 FormItem 的 name
+
+### UserName 和 Password
+
+这俩组件应该是差不多的，我门放在一起说，可以看到他俩是 LoginItem 对象的 value：
+
+```
+Login.UserName = LoginItem.UserName;
+Login.Password = LoginItem.Password;
+```
+
+继续查看发现，LoginItems 这个对象上的 UserName 和 Password 是通过遍历 map.ts 来赋值的，通过生成一个 LoginItem 组件，这个组件是通过 LoginItemProps 组合的
+
+```
+<FormItem name={name} {...options}>
+  <Input {...customProps} {...otherProps} />
+</FormItem>
+```
+
+原本以为是很简单的，仔细追踪发现写的挺绕的，封装了很多层，都使用 LoginItemProps 做了约束，还有这句`export default LoginItems as LoginItemType`，上面明明已经有了`export interface LoginItemType`，而且在使用的时候还是当做 LoginItems 来使用的。目前没有感受到这么写的意图，两个输入框+一个提交按键，需要写这么多吗？
+
+### 接口验证
+
+UI 和 model 层面的大致逻辑搞懂了，那么下一步需要研究下，怎么去和后端 API 进行 mock 和真实的联调。
+
+1. 组件事件处理函数发起 dispatch
+2. model 的 effects 进行处理
+3. service 发起 http 请求
+4. mock 响应或者是真实的接口
+5. http 响应数据 response，交给 effects 继续处理
+
 ## layouts
 
 ## pages
