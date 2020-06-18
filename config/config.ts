@@ -43,7 +43,7 @@ export default defineConfig({
         {
           path: '/',
           component: '@/layouts/BasicLayout',
-          authority: ['admin', 'user'],
+          authority: ['user'],
           routes: [
             {
               path: '/',

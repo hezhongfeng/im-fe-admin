@@ -31,6 +31,7 @@ const Model: LoginModelType = {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
+      response.roles = response.roles ? response.roles.map((item: any) => item.keyName) : null;
       yield put({
         type: 'changeLoginStatus',
         payload: response,
