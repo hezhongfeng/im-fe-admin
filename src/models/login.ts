@@ -6,7 +6,7 @@ import { setAuthority } from '@/utils/authority';
 export interface StateType {
   status?: '0' | '1';
   errorMessage?: string;
-  currentAuthority?: 'user' | 'guest' | 'admin';
+  currentAuthority?: Array<object>;
 }
 
 export interface LoginModelType {
@@ -51,7 +51,7 @@ const Model: LoginModelType = {
   reducers: {
     changeLoginStatus(state, { payload }) {
       if (payload.roles) {
-        setAuthority(payload.roles[0].keyName);
+        setAuthority(payload.roles);
       }
 
       return {
