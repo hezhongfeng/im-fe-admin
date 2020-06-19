@@ -225,9 +225,27 @@ SecurityLayout 是一个比较传统的 React 组件（因为只有这一个我�
   return children;
 ```
 
-这个组件的作用就是在组件没有 Mount 的时候返回 PageLoading(这个是 pro-layout 提供的)， componentDidMount 之后判断是否登录，不然就给你 redirect 到登录页，由于这个是除了登录页面的最顶层的 layout，所以可以保证其子路由下的任何页面都是必须登录后才可以访问的。
+这个组件的作用就是在组件没有 Mount 的时候返回 PageLoading，这个是 pro-layout 提供的,看了下属于全网页的 loading, componentDidMount 之后判断是否登录，不然就给你 redirect 到登录页，由于这个是除了登录页面的最顶层的 layout，所以可以保证其子路由下的任何页面都是必须登录后才可以访问的。下面开始分析下 BasicLayout
 
 ### BasicLayout
+
+可以看到 组件 connect 后，传递给组件的有 settings 和 global.collapsed，前者没搞清楚，后者是配合全局菜单折叠的
+
+最终 return 的是 ProLayout，包括左侧可折叠菜单栏 sider，顶部 header,正文 content 和 页脚 footer，和我以前封装的结构差不多。
+
+注意正文区域是被 Authorized 组件包裹着的，通过 getAuthorityFromRouter 传入了当前路由所需的权限,继续看下 Authorized 是什么组件
+
+### Authorized
+
+发现 Authorized 是由 getAuthority 函数返回的数据生成的
+
+```
+Authorized = RenderAuthorize(getAuthority());
+```
+
+查看 getAuthority 里面，是从 localStorage 读取的值（登录成功后写入的值）,RenderAuthorize 通过检查当前路由所需的 authority 和当前用户拥有的权限进行 check，通过了就没问题，不通过就显示 403 的 Result。这部分也是有些绕，看到后面已经看不懂了，但我可以猜出来。。。
+
+### 主页
 
 主页目前是一个 welcome 页，暂时不需要处理他，所以直奔主题，看看列表管理页面，这才是我们的目标，也就是两个 layout`@/layouts/SecurityLayout`、`@/layouts/BasicLayout`嵌套着一个普通的列表页面`@/pages/ListTableList`。
 
