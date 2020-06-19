@@ -189,4 +189,62 @@ UI 和 model 层面的大致逻辑搞懂了，那么下一步需要研究下，�
 
 ## layouts
 
-## pages
+登录成功之后，会发现在进入到主页之前会有一个`/api/currentUser`请求，获取当前登录成功用户的基础信息，经过搜索发现是在`@/layouts/SecurityLayout`里面的生命周期钩子里面发起的：
+
+```
+  componentDidMount() {
+    this.setState({
+      isReady: true,
+    });
+    const { dispatch } = this.props;
+    if (dispatch) {
+      dispatch({
+        type: 'user/fetchCurrent',
+      });
+    }
+  }
+```
+
+这个组件看起来很熟悉了，因为这是我们遇到的为数不多的有状态的类组件，其余的都是属于`Stateless Functional Components`这也是 dva 比较推崇的一种组件形式。
+
+经过后台接口返回数据的改造之后，我们已经可以正常进入到主页了，右上角也显示出了当前用户的 name 等信息，下面来看一下 pro-layout 是怎么起作用的。
+
+### SecurityLayout
+
+SecurityLayout 是一个比较传统的 React 组件（因为只有这一个我看起来很熟悉）
+
+首先这一句我没看懂`React.Component<SecurityLayoutProps, SecurityLayoutState>`也没找到说明
+
+```
+  if ((!isLogin && loading) || !isReady) {
+    return <PageLoading />;
+  }
+  if (!isLogin && window.location.pathname !== '/user/login') {
+    return <Redirect to={`/user/login?${queryString}`} />;
+  }
+  return children;
+```
+
+这个组件的作用就是在组件没有 Mount 的时候返回 PageLoading(这个是 pro-layout 提供的)， componentDidMount 之后判断是否登录，不然就给你 redirect 到登录页，由于这个是除了登录页面的最顶层的 layout，所以可以保证其子路由下的任何页面都是必须登录后才可以访问的。
+
+### BasicLayout
+
+主页目前是一个 welcome 页，暂时不需要处理他，所以直奔主题，看看列表管理页面，这才是我们的目标，也就是两个 layout`@/layouts/SecurityLayout`、`@/layouts/BasicLayout`嵌套着一个普通的列表页面`@/pages/ListTableList`。
+
+打开后会发现这个列表页面会发起一个请求`queryRule`,通过查看 mock 数据我们知道了返回的数据模型是这样的：
+
+```
+const result = {
+  data: dataSource,
+  total: tableListDataSource.length,
+  success: true,
+  pageSize,
+  current: parseInt(`${params.currentPage}`, 10) || 1,
+};
+```
+
+这个请求的发起者应该是`ProTable`，然后返回的数据也在它的内部消化了，这种形式我还比较熟悉。接下来学习下 ProTable 的设计和使用方式。
+
+## ProTable
+
+> ProTable 的诞生是为了解决项目中需要写很多 table 的样板代码的问题，所以在其中做了封装了很多常用的逻辑。这些封装可以简单的分类为预设行为与预设逻辑
