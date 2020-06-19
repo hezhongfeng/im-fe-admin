@@ -8,12 +8,7 @@ export interface CurrentUser {
   title?: string;
   group?: string;
   signature?: string;
-  tags?: {
-    key: string;
-    label: string;
-  }[];
   userid?: string;
-  unreadCount?: number;
 }
 
 export interface UserModelState {
@@ -50,9 +45,18 @@ const UserModel: UserModelType = {
     },
     *fetchCurrent(_, { call, put }) {
       const response = yield call(queryCurrent);
+
+      const payload = {
+        name: response.data.userInfo.nickname,
+        avatar: response.data.userInfo.photo,
+        userid: response.data.userInfo.userId,
+        title: '',
+        group: '',
+        signature: response.data.userInfo.sign,
+      };
       yield put({
         type: 'saveCurrentUser',
-        payload: response,
+        payload,
       });
     },
   },

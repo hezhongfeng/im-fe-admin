@@ -21,6 +21,10 @@ export interface LoginModelType {
   };
 }
 
+function isAdmin(roles: Array<string>): boolean {
+  return roles.some((item: string) => item === 'admin');
+}
+
 const Model: LoginModelType = {
   namespace: 'login',
 
@@ -31,13 +35,21 @@ const Model: LoginModelType = {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
-      response.roles = response.roles ? response.roles.map((item: any) => item.keyName) : null;
+      // 处理权限问题
+      if (response.data && response.data.roles) {
+        response.data.roles = response.data.roles.map((item: any) => item.keyName);
+        // 没有admin权限的话手动赋值错误信息
+        if (!isAdmin(response.data.roles)) {
+          response.errorMessage = '权限错误';
+          response.statusCode = '1';
+        }
+      }
       yield put({
         type: 'changeLoginStatus',
         payload: response,
       });
       // Login successfully
-      if (response.statusCode === '0') {
+      if (response.statusCode === '0' && isAdmin(response.data.roles)) {
         history.replace('/');
       }
     },
@@ -51,8 +63,8 @@ const Model: LoginModelType = {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      if (payload.roles) {
-        setAuthority(payload.roles);
+      if (payload.data && payload.data.roles) {
+        setAuthority(payload.data.roles);
       }
 
       return {

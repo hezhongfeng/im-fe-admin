@@ -39,11 +39,12 @@ export default defineConfig({
     {
       path: '/',
       component: '@/layouts/SecurityLayout',
+      authority: ['admin'],
       routes: [
         {
           path: '/',
           component: '@/layouts/BasicLayout',
-          authority: ['user'],
+          authority: ['admin'],
           routes: [
             {
               path: '/',
@@ -54,12 +55,14 @@ export default defineConfig({
               name: 'welcome',
               icon: 'smile',
               component: '@/pages/Welcome',
+              authority: ['admin'],
             },
             {
               name: 'admin.group',
               icon: 'table',
               path: '/group',
               component: '@/pages/ListTableList',
+              authority: ['admin'],
             },
             {
               component: '@/pages/404',
