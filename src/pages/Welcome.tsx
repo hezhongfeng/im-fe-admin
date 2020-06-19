@@ -15,7 +15,7 @@ export default (): React.ReactNode => (
   <PageHeaderWrapper>
     <Card>
       <Alert
-        message="umi ui 现已发布，点击右下角 umi 图标即可使用"
+        message="im-fa-admin 现已发布，点击左侧菜单开始使用吧"
         type="success"
         showIcon
         banner
@@ -46,17 +46,5 @@ export default (): React.ReactNode => (
       </Typography.Text>
       <CodePreview> npm run fetch:blocks</CodePreview>
     </Card>
-    <p
-      style={{
-        textAlign: 'center',
-        marginTop: 24,
-      }}
-    >
-      Want to add more pages? Please refer to{' '}
-      <a href="https://pro.ant.design/docs/block-cn" target="_blank" rel="noopener noreferrer">
-        use block
-      </a>
-      。
-    </p>
   </PageHeaderWrapper>
 );
