@@ -235,7 +235,7 @@ SecurityLayout 是一个比较传统的 React 组件（因为只有这一个我�
 
 注意正文区域是被 Authorized 组件包裹着的，通过 getAuthorityFromRouter 传入了当前路由所需的权限,继续看下 Authorized 是什么组件
 
-### Authorized
+#### Authorized
 
 发现 Authorized 是由 getAuthority 函数返回的数据生成的
 
@@ -243,7 +243,17 @@ SecurityLayout 是一个比较传统的 React 组件（因为只有这一个我�
 Authorized = RenderAuthorize(getAuthority());
 ```
 
-查看 getAuthority 里面，是从 localStorage 读取的值（登录成功后写入的值）,RenderAuthorize 通过检查当前路由所需的 authority 和当前用户拥有的权限进行 check，通过了就没问题，不通过就显示 403 的 Result。这部分也是有些绕，看到后面已经看不懂了，但我可以猜出来。。。
+查看 getAuthority 里面，是从 localStorage 读取的值（登录成功后写入的值）,RenderAuthorize 通过检查当前路由所需的 authority 和当前用户拥有的权限进行 check，通过了就没问题，不通过就显示 403 的 Result。这部分也是有些绕，看到后面已经看不懂了，但我可以猜出来。。。下面分析下 ProLayout 里面各种 render
+
+#### render
+
+1. menuHeaderRender 左上角的 logo 和 title
+2. menuItemRender 自定义菜单项的 render 方法，就是真正的菜单，可以点击打开路由的
+3. breadcrumbRender 自定义面包屑的数据，具体怎么使用的没看懂
+4. itemRender 没有说明，经过测试发现是面包屑里面各个 item 的 render,如果 first，就返回一个可以到根路由的 Link
+5. footerRender 页脚的 render
+6. menuDataRender 过滤菜单数据的 render，例如有些需要权限的路由，这里的菜单数据需要把没有该权限的菜单过滤掉
+7. rightContentRender 正文上部右侧，显示用户名，退出菜单等的位置
 
 ### 主页
 
