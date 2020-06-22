@@ -255,11 +255,13 @@ Authorized = RenderAuthorize(getAuthority());
 6. menuDataRender 过滤菜单数据的 render，例如有些需要权限的路由，这里的菜单数据需要把没有该权限的菜单过滤掉
 7. rightContentRender 正文上部右侧，显示用户名，退出菜单等的位置
 
-### 主页
+layout 的大概我们看完了，下一步继续看看正文的内容吧
 
-主页目前是一个 welcome 页，暂时不需要处理他，所以直奔主题，看看列表管理页面，这才是我们的目标，也就是两个 layout`@/layouts/SecurityLayout`、`@/layouts/BasicLayout`嵌套着一个普通的列表页面`@/pages/ListTableList`。
+## ProTable
 
-打开后会发现这个列表页面会发起一个请求`queryRule`,通过查看 mock 数据我们知道了返回的数据模型是这样的：
+主页目前是一个 welcome 页，暂时不需要处理他，所以直奔主题，看看列表管理页面，这才是我们的目标，也就是两个 layout`@/layouts/SecurityLayout`、`@/layouts/BasicLayout`嵌套着一个普通的列表页面`@/pages/ListTableList`
+
+通过菜单打开这个路由后会发现这个列表页面会发起一个请求`queryRule`，通过查看 mock 数据我们知道了返回的数据模型是这样的：
 
 ```
 const result = {
@@ -271,8 +273,6 @@ const result = {
 };
 ```
 
-这个请求的发起者应该是`ProTable`，然后返回的数据也在它的内部消化了，这种形式我还比较熟悉。接下来学习下 ProTable 的设计和使用方式。
-
-## ProTable
+这个请求的发起者应该是`ProTable`，然后返回的数据也在它的内部消化了，这种形式我还比较熟悉。接下来学习下 ProTable 的设计和使用方式
 
 > ProTable 的诞生是为了解决项目中需要写很多 table 的样板代码的问题，所以在其中做了封装了很多常用的逻辑。这些封装可以简单的分类为预设行为与预设逻辑
