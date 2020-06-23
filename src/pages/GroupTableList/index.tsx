@@ -1,5 +1,5 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Dropdown, Menu, message, Input } from 'antd';
+import { Button, Divider, Dropdown, Menu, message } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -7,7 +7,7 @@ import { SorterResult } from 'antd/es/table/interface';
 
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
-import { TableListItem } from './data.d';
+import { TableListItem } from './data';
 import { queryRule, updateRule, addRule, removeRule } from './service';
 
 /**
@@ -72,6 +72,26 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
   }
 };
 
+/**
+ *
+ * 禁言群组
+ * @param currentItem
+ */
+const editAndDelete = (key: string, status: boolean, record: any) => {
+  console.log(record);
+
+  // if (key === 'edit') showEditModal(currentItem);
+  // else if (key === 'delete') {
+  //   Modal.confirm({
+  //     title: '删除任务',
+  //     content: '确定删除该任务吗？',
+  //     okText: '确认',
+  //     cancelText: '取消',
+  //     onOk: () => deleteItem(currentItem.id),
+  //   });
+  // }
+};
+
 const TableList: React.FC<{}> = () => {
   const [sorter, setSorter] = useState<string>('');
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
@@ -80,7 +100,7 @@ const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<TableListItem>[] = [
     {
-      title: '规则名称',
+      title: '群组名称',
       dataIndex: 'name',
       rules: [
         {
@@ -91,62 +111,89 @@ const TableList: React.FC<{}> = () => {
     },
     {
       title: '描述',
-      dataIndex: 'desc',
+      dataIndex: 'introduction',
       valueType: 'textarea',
     },
     {
-      title: '服务调用次数',
-      dataIndex: 'callNo',
-      sorter: true,
-      hideInForm: true,
-      renderText: (val: string) => `${val} 万`,
-    },
-    {
       title: '状态',
-      dataIndex: 'status',
+      dataIndex: 'disabled',
       hideInForm: true,
+      filters: [],
       valueEnum: {
-        0: { text: '关闭', status: 'Default' },
-        1: { text: '运行中', status: 'Processing' },
-        2: { text: '已上线', status: 'Success' },
-        3: { text: '异常', status: 'Error' },
+        false: { text: '未解散', status: 'Success' },
+        true: { text: '已解散', status: 'Error' },
       },
     },
     {
-      title: '上次调度时间',
+      title: '禁言状态',
+      dataIndex: 'mute',
+      hideInForm: true,
+      filters: [],
+      valueEnum: {
+        false: { text: '未禁言', status: 'Success', filter: undefined },
+        true: { text: '已禁言', status: 'Error' },
+      },
+    },
+    {
+      title: '创建时间',
       dataIndex: 'updatedAt',
       sorter: true,
       valueType: 'dateTime',
       hideInForm: true,
-      renderFormItem: (item, { defaultRender, ...rest }, form) => {
-        const status = form.getFieldValue('status');
-        if (`${status}` === '0') {
-          return false;
-        }
-        if (`${status}` === '3') {
-          return <Input {...rest} placeholder="请输入异常原因！" />;
-        }
-        return defaultRender(item);
-      },
     },
     {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) => (
-        <>
-          <a
-            onClick={() => {
-              handleUpdateModalVisible(true);
-              setStepFormValues(record);
-            }}
-          >
-            配置
-          </a>
-          <Divider type="vertical" />
-          <a href="">订阅警报</a>
-        </>
-      ),
+      render: (_, record) => {
+        const DisA: React.FC<{}> = () => {
+          return record.disabled ? (
+            <a>
+              onClick=
+              {() => {
+                editAndDelete('disabled', false, record);
+              }}
+              开放
+            </a>
+          ) : (
+            <a
+              onClick={() => {
+                editAndDelete('disabled', false, record);
+              }}
+            >
+              解散
+            </a>
+          );
+        };
+
+        const MuseA: React.FC<{}> = () => {
+          return record.mute ? (
+            <a>
+              onClick=
+              {() => {
+                editAndDelete('disabled', false, record);
+              }}
+              解除禁言
+            </a>
+          ) : (
+            <a
+              onClick={() => {
+                editAndDelete('disabled', false, record);
+              }}
+            >
+              禁言
+            </a>
+          );
+        };
+
+        return (
+          <>
+            <DisA />
+            <Divider type="vertical" />
+            <MuseA />
+          </>
+        );
+      },
     },
   ];
 
@@ -155,7 +202,7 @@ const TableList: React.FC<{}> = () => {
       <ProTable<TableListItem>
         headerTitle="查询表格"
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="id"
         onChange={(_, _filter, _sorter) => {
           const sorterResult = _sorter as SorterResult<TableListItem>;
           if (sorterResult.field) {
@@ -200,9 +247,10 @@ const TableList: React.FC<{}> = () => {
             </span>
           </div>
         )}
-        request={(params) => queryRule(params)}
+        request={(params, sort) => queryRule(params, sort)}
         columns={columns}
-        rowSelection={{}}
+        rowSelection={false}
+        search={false}
       />
       <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
         <ProTable<TableListItem, TableListItem>

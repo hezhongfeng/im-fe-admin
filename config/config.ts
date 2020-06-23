@@ -61,7 +61,14 @@ export default defineConfig({
               name: 'admin.group',
               icon: 'table',
               path: '/group',
-              component: '@/pages/ListTableList',
+              component: '@/pages/GroupTableList',
+              authority: ['admin'],
+            },
+            {
+              name: 'admin.role',
+              icon: 'table',
+              path: '/role',
+              component: '@/pages/RoleTableList',
               authority: ['admin'],
             },
             {

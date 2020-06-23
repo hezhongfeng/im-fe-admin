@@ -11,6 +11,7 @@ export interface TableListItem {
   updatedAt: Date;
   createdAt: Date;
   progress: number;
+  mute?: boolean;
 }
 
 export interface TableListPagination {
@@ -31,5 +32,5 @@ export interface TableListParams {
   desc?: string;
   key?: number;
   pageSize?: number;
-  currentPage?: number;
+  current?: number;
 }
