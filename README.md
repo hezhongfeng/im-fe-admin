@@ -261,6 +261,10 @@ layout 的大概我们看完了，下一步继续看看正文的内容吧
 
 主页目前是一个 welcome 页，暂时不需要处理他，所以直奔主题，看看列表管理页面，这才是我们的目标，也就是两个 layout`@/layouts/SecurityLayout`、`@/layouts/BasicLayout`嵌套着一个普通的列表页面`@/pages/ListTableList`
 
+> ProTable 的诞生是为了解决项目中需要写很多 table 的样板代码的问题，所以在其中做了封装了很多常用的逻辑。这些封装可以简单的分类为预设行为与预设逻辑
+
+### request
+
 通过菜单打开这个路由后会发现这个列表页面会发起一个请求`queryRule`，通过查看 mock 数据我们知道了返回的数据模型是这样的：
 
 ```
@@ -273,6 +277,29 @@ const result = {
 };
 ```
 
-这个请求的发起者应该是`ProTable`，然后返回的数据也在它的内部消化了，这种形式我还比较熟悉。接下来学习下 ProTable 的设计和使用方式
+这个请求的发起者是`ProTable`，然后返回的数据也在它的内部消化了，这种形式我还比较熟悉。
 
-> ProTable 的诞生是为了解决项目中需要写很多 table 的样板代码的问题，所以在其中做了封装了很多常用的逻辑。这些封装可以简单的分类为预设行为与预设逻辑
+通过查找 mock 发现 ProTable 上的`request={(params) => queryRule(params)}`封装了列表的请求行为，然后找到同目录下的 service.ts,在这里调用了封装的`umi-request`
+
+然后这里发现了一个问题，ProTable 上的 request 是提供三个参数的，第一个 params 会自带 pageSize 和 current,并且将 props 中的 params 也会带入其中,对应的 queryRule 的参数使用一个接口 TableListParams 给约束了，这俩对不上，比如想要获取当前页码，request 传出来的是 current，TableListParams 里面只有 currentPage 这个参数，导致想要发给后台做参数变形的时候无法拿到 current，最后我修改了 currentPage,变为 current 才可以顺利获取参数，没搞懂是模板错误还是我的理解有问题
+
+在 service 中返回 promise 或者自定义的结构都可以，有如下的约束，我的后台返回的参数是需要做一下处理的
+
+```
+  const res = await request('/api/v1/admin/roles', {
+    params: param,
+  });
+  return {
+    data: res.data.rows,
+    total: res.data.count,
+    success: true,
+  };
+```
+
+这样就完成了一次请求，然后后台返回的数据列表里面的 key 是 id，所以需要把 ProTable 上的 rowKey 改成 id，有利于 React 做 diff，可以看到有一些列没有显示内容，那可能就是 columns 的取值属性何后台返回的有差别，做一些修改即可
+
+## TS 相关
+
+`React.FC`的使用目的，目前还没搞清楚，不过发现了一份相关的讨论
+
+[React.FC](https://github.com/facebook/create-react-app/pull/8177)

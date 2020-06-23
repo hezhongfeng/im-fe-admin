@@ -2,7 +2,6 @@ import request from '@/utils/request';
 import { TableListParams, TableListItem } from './data.d';
 
 export async function queryRule(params?: TableListParams) {
-  console.log(params);
   const param = Object.assign(
     {
       pageNumber: params ? params.current : 1,
@@ -13,8 +12,11 @@ export async function queryRule(params?: TableListParams) {
   const res = await request('/api/v1/admin/roles', {
     params: param,
   });
-  console.log(res);
-  // return res;
+  return {
+    data: res.data.rows,
+    total: res.data.count,
+    success: true,
+  };
 }
 
 export async function removeRule(params: { key: number[] }) {
