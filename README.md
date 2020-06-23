@@ -235,6 +235,14 @@ SecurityLayout 是一个比较传统的 React 组件（因为只有这一个我�
 
 注意正文区域是被 Authorized 组件包裹着的，通过 getAuthorityFromRouter 传入了当前路由所需的权限,继续看下 Authorized 是什么组件
 
+补充一下：整体布局是很有问题，在我想把中间部分撑满的时候发现居然有下面的样式：
+
+```
+basicLayout-content .ant-pro-page-header-wrap {
+    margin: -24px -24px 0;
+}
+```
+
 #### Authorized
 
 发现 Authorized 是由 getAuthority 函数返回的数据生成的
