@@ -10,16 +10,46 @@ body,
   filter: invert(80%);
 }
 
-.ant-layout {
-  min-height: 100vh;
-}
-
-.ant-pro-basicLayout-content {
-  height: calc(100vh - 188px);
-}
-
-.ant-table {
-  height: calc(100vh - 542px);
+main.ant-pro-basicLayout-content {
+  height: calc(100vh - 164px);
+  margin: 0;
+  > .ant-pro-basicLayout-children-content-wrap {
+    height: 100%;
+    .ant-pro-grid-content {
+      height: 100%;
+      .ant-pro-page-header-wrap {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        margin: 0;
+        .ant-pro-page-header-wrap-children-content {
+          flex-grow: 2;
+          .ant-pro-table {
+            height: 100%;
+            .ant-card-body {
+              display: flex;
+              flex-direction: column;
+              height: 100%;
+              .ant-table-wrapper {
+                flex-grow: 2;
+                .ant-spin-nested-loading {
+                  height: 100%;
+                  .ant-spin-container {
+                    display: flex;
+                    flex-direction: column;
+                    height: 100%;
+                    .ant-table {
+                      flex-grow: 2;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 .ant-layout-footer > .ant-pro-global-footer {

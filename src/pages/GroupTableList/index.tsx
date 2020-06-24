@@ -1,5 +1,4 @@
-import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Dropdown, Menu, message, Modal } from 'antd';
+import { Divider, message, Modal } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -8,7 +7,7 @@ import { SorterResult } from 'antd/es/table/interface';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TableListItem } from './data';
-import { queryRule, updateRule, addRule, removeRule, disabledGroup, muteGroup } from './service';
+import { queryRule, updateRule, addRule, disabledGroup, muteGroup } from './service';
 
 /**
  * 添加节点
@@ -52,27 +51,6 @@ const handleUpdate = async (fields: FormValueType) => {
 };
 
 /**
- *  删除节点
- * @param selectedRows
- */
-const handleRemove = async (selectedRows: TableListItem[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-  try {
-    await removeRule({
-      key: selectedRows.map((row) => row.key),
-    });
-    hide();
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('删除失败，请重试');
-    return false;
-  }
-};
-
-/**
  *
  * 禁言群组
  * @param currentItem
@@ -91,11 +69,6 @@ const editAndDelete = (key: string, status: boolean, record: any, actionRef: any
       const hide = message.loading('正在处理');
       try {
         if (key === 'disabled') {
-          console.log({
-            disabled: status,
-            id: record.id,
-          });
-
           await disabledGroup({
             disabled: status,
             id: record.id,
@@ -164,7 +137,7 @@ const TableList: React.FC<{}> = () => {
       },
     },
     {
-      title: '创建时间',
+      title: '更新时间',
       dataIndex: 'updatedAt',
       sorter: true,
       valueType: 'dateTime',
@@ -241,33 +214,6 @@ const TableList: React.FC<{}> = () => {
         params={{
           sorter,
         }}
-        toolBarRender={(action, { selectedRows }) => [
-          <Button type="primary" onClick={() => handleModalVisible(true)}>
-            <PlusOutlined /> 新建
-          </Button>,
-          selectedRows && selectedRows.length > 0 && (
-            <Dropdown
-              overlay={
-                <Menu
-                  onClick={async (e) => {
-                    if (e.key === 'remove') {
-                      await handleRemove(selectedRows);
-                      action.reload();
-                    }
-                  }}
-                  selectedKeys={[]}
-                >
-                  <Menu.Item key="remove">批量删除</Menu.Item>
-                  <Menu.Item key="approval">批量审批</Menu.Item>
-                </Menu>
-              }
-            >
-              <Button>
-                批量操作 <DownOutlined />
-              </Button>
-            </Dropdown>
-          ),
-        ]}
         tableAlertRender={({ selectedRowKeys, selectedRows }) => (
           <div>
             已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;

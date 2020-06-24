@@ -27,7 +27,7 @@ export async function disabledGroup(params: any) {
 }
 
 export async function muteGroup(params: any) {
-  return request('/api/rule', {
+  return request('/api/v1/admin/groups/mute', {
     method: 'PUT',
     data: {
       ...params,
