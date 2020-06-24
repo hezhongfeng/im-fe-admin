@@ -17,6 +17,24 @@ export async function queryRule(params?: TableListParams, sort?: any) {
   };
 }
 
+export async function disabledGroup(params: any) {
+  return request('/api/v1/admin/groups/disabled', {
+    method: 'PUT',
+    data: {
+      ...params,
+    },
+  });
+}
+
+export async function muteGroup(params: any) {
+  return request('/api/rule', {
+    method: 'PUT',
+    data: {
+      ...params,
+    },
+  });
+}
+
 export async function removeRule(params: { key: number[] }) {
   return request('/api/rule', {
     method: 'POST',
