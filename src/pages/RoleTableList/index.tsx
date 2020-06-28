@@ -42,6 +42,15 @@ const TableList: React.FC<{}> = () => {
       hideInSearch: true,
     },
     {
+      title: '权限',
+      render(_, record) {
+        const roles = record.rights.map((right: { name: string; id: string }) => (
+          <div key={right.id}>{right.name}</div>
+        ));
+        return roles;
+      },
+    },
+    {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',

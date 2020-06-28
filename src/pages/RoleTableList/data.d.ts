@@ -11,6 +11,10 @@ export interface TableListItem {
   updatedAt: Date;
   createdAt: Date;
   progress: number;
+  rights: Array<{
+    name: string;
+    id: string;
+  }>;
 }
 
 export interface TableListPagination {
