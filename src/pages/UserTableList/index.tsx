@@ -5,7 +5,7 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { SorterResult } from 'antd/es/table/interface';
 
 import { TableListItem } from './data';
-import { queryRule, disabledGroup, muteGroup } from './service';
+import { queryUsers, disabledUser, muteUser } from './service';
 import style from './style.less';
 
 /**
@@ -27,12 +27,12 @@ const editAndDelete = (key: string, status: boolean, record: any, actionRef: any
       const hide = message.loading('正在处理');
       try {
         if (key === 'disabled') {
-          await disabledGroup({
+          await disabledUser({
             disabled: status,
             id: record.id,
           });
         } else {
-          await muteGroup({
+          await muteUser({
             mute: status,
             id: record.id,
           });
@@ -232,7 +232,7 @@ const TableList: React.FC<{}> = () => {
             </span>
           </div>
         )}
-        request={(params, sort) => queryRule(params, sort)}
+        request={(params, sort) => queryUsers(params, sort)}
         columns={columns}
         rowSelection={false}
         search={false}
