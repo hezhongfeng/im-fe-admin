@@ -43,15 +43,15 @@ export default defineConfig({
       routes: [
         {
           path: '/',
+          redirect: '/admin/welcome',
+        },
+        {
+          path: '/admin',
           component: '@/layouts/BasicLayout',
           authority: ['admin'],
           routes: [
             {
-              path: '/',
-              redirect: '/welcome',
-            },
-            {
-              path: '/welcome',
+              path: '/admin/welcome',
               name: 'welcome',
               icon: 'smile',
               component: '@/pages/Welcome',
@@ -60,14 +60,21 @@ export default defineConfig({
             {
               name: 'admin.group',
               icon: 'table',
-              path: '/group',
+              path: '/admin/group',
               component: '@/pages/GroupTableList',
+              authority: ['admin'],
+            },
+            {
+              name: 'admin.user',
+              icon: 'table',
+              path: '/admin/user',
+              component: '@/pages/UserTableList',
               authority: ['admin'],
             },
             {
               name: 'admin.role',
               icon: 'table',
-              path: '/role',
+              path: '/admin/role',
               component: '@/pages/RoleTableList',
               authority: ['admin'],
             },
