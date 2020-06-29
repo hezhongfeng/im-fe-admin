@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import http from '@/utils/http';
 import { TableListParams } from './data';
 
 export async function queryRoles(params?: TableListParams) {
@@ -9,12 +9,10 @@ export async function queryRoles(params?: TableListParams) {
     params,
   );
   delete param.current;
-  const res = await request('/api/v1/admin/roles', {
-    params: param,
-  });
+  const data: any = await http.get('/api/v1/admin/roles', param);
   return {
-    data: res.data.rows,
-    total: res.data.count,
+    data: data.rows,
+    total: data.count,
     success: true,
   };
 }

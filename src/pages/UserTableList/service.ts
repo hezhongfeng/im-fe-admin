@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import http from '@/utils/http';
 import { TableListParams } from './data';
 
 export async function queryUsers(params?: TableListParams, sort?: any) {
@@ -7,31 +7,18 @@ export async function queryUsers(params?: TableListParams, sort?: any) {
     sorter: sort,
   });
   delete param.current;
-  const res = await request('/api/v1/admin/users', {
-    params: param,
-  });
+  const data: any = await http.get('/api/v1/admin/users', param);
   return {
-    data: res.data.rows,
-    total: res.data.count,
+    data: data.rows,
+    total: data.count,
     success: true,
   };
 }
 
 export async function disabledUser(params: any) {
-  return request('/api/v1/admin/users/disabled', {
-    method: 'PUT',
-    data: {
-      ...params,
-      id: 2345,
-    },
-  });
+  return http.put('/api/v1/admin/users/disabled', params);
 }
 
 export async function muteUser(params: any) {
-  return request('/api/v1/admin/users/mute', {
-    method: 'PUT',
-    data: {
-      ...params,
-    },
-  });
+  return http.put('/api/v1/admin/users/mute', params);
 }
