@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import http from '@/utils/http';
 import { TableListParams } from './data';
 
 export async function queryGroups(params?: TableListParams, sort?: any) {
@@ -7,30 +7,18 @@ export async function queryGroups(params?: TableListParams, sort?: any) {
     sorter: sort,
   });
   delete param.current;
-  const res = await request('/api/v1/admin/groups', {
-    params: param,
-  });
+  const data: any = await http.get('/api/v1/admin/groups', param);
   return {
-    data: res.data.rows,
-    total: res.data.count,
+    data: data.rows,
+    total: data.count,
     success: true,
   };
 }
 
 export async function disabledGroup(params: any) {
-  return request('/api/v1/admin/groups/disabled', {
-    method: 'PUT',
-    data: {
-      ...params,
-    },
-  });
+  return http.put('/api/v1/admin/groups/disabled', params);
 }
 
 export async function muteGroup(params: any) {
-  return request('/api/v1/admin/groups/mute', {
-    method: 'PUT',
-    data: {
-      ...params,
-    },
-  });
+  return http.put('/api/v1/admin/groups/mute', params);
 }

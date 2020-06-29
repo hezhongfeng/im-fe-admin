@@ -9,7 +9,6 @@ import { notification } from 'antd';
  * 异常处理程序
  */
 const errorHandler = (error: { response: Response }): Response => {
-  console.log('errorHandler');
   const { response } = error;
   if (!response) {
     notification.error({
@@ -27,15 +26,6 @@ const request = extend({
   errorHandler, // 默认错误处理
   credentials: 'include', // 默认请求是否带上cookie
 });
-
-// request.use(async (ctx, next) => {
-//   await next();
-//   const { res } = ctx;
-//   if (res.statusCode !== '0') {
-//     throw res;
-//   }
-//   console.log(res);
-// });
 
 const responseHandle = (response: any) => {
   return new Promise((resolve, reject) => {
@@ -62,22 +52,22 @@ export default {
     });
     return responseHandle(response);
   },
-  // async put(url, params) {
-  //   addDefaultParams(params);
-  //   add();
-  //   let host = store.getters.current.host || '';
-  //   let response = await axios.put(host + url, params);
-  //   minus();
-  //   return responseHandle(response);
-  // },
-  // async delete(url, params) {
-  //   addDefaultParams(params);
-  //   add();
-  //   let host = store.getters.current.host || '';
-  //   let response = await axios.delete(host + url, { data: params });
-  //   minus();
-  //   return responseHandle(response);
-  // },
+  async put(url: string, params: any) {
+    const response = await request(url, {
+      method: 'PUT',
+      data: {
+        ...params,
+      },
+    });
+    return responseHandle(response);
+  },
+  async delete(url: string, params: any) {
+    const response = await request(url, {
+      method: 'DELETE',
+      data: {
+        ...params,
+      },
+    });
+    return responseHandle(response);
+  },
 };
-
-// export default request;
