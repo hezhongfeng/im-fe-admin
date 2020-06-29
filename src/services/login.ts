@@ -1,4 +1,5 @@
-import request from '@/utils/request';
+// import { message } from 'antd';
+import http from '@/utils/http';
 
 export interface LoginParamsType {
   userName: string;
@@ -6,8 +7,5 @@ export interface LoginParamsType {
 }
 
 export async function fakeAccountLogin(params: LoginParamsType) {
-  return request('/api/v1/login', {
-    method: 'POST',
-    data: params,
-  });
+  return http.post('/api/v1/login', params);
 }

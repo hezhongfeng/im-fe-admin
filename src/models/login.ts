@@ -34,23 +34,31 @@ const Model: LoginModelType = {
 
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
-      // 处理权限问题
-      if (response.data && response.data.roles) {
-        response.data.roles = response.data.roles.map((item: any) => item.keyName);
-        // 没有admin权限的话手动赋值错误信息
-        if (!isAdmin(response.data.roles)) {
-          response.errorMessage = '权限错误';
-          response.statusCode = '1';
+      try {
+        const data = yield call(fakeAccountLogin, payload);
+        // 处理权限问题
+        if (data.roles) {
+          data.roles = data.roles.map((item: any) => item.keyName);
+          // 没有admin权限显示出提示信息
+          if (!isAdmin(data.roles)) {
+            data.statusCode = '1';
+            data.errorMessage = '权限错误，您不具备管理权限';
+            yield put({
+              type: 'changeLoginStatus',
+              payload: data,
+            });
+            return;
+          }
         }
-      }
-      yield put({
-        type: 'changeLoginStatus',
-        payload: response,
-      });
-      // Login successfully
-      if (response.statusCode === '0' && isAdmin(response.data.roles)) {
+
+        // 登录成功且权限验证正确
         history.replace('/');
+      } catch (error) {
+        // 处理账号密码错误等问题
+        yield put({
+          type: 'changeLoginStatus',
+          payload: error,
+        });
       }
     },
 
@@ -63,8 +71,8 @@ const Model: LoginModelType = {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      if (payload.data && payload.data.roles) {
-        setAuthority(payload.data.roles);
+      if (payload.data && payload.roles) {
+        setAuthority(payload.roles);
       }
 
       return {
