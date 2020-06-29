@@ -44,15 +44,15 @@ const UserModel: UserModelType = {
       });
     },
     *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent);
+      const data = yield call(queryCurrent);
 
       const payload = {
-        name: response.data.userInfo.nickname,
-        avatar: response.data.userInfo.photo,
-        userid: response.data.userInfo.userId,
+        name: data.userInfo.nickname,
+        avatar: data.userInfo.photo,
+        userid: data.userInfo.userId,
         title: '',
         group: '',
-        signature: response.data.userInfo.sign,
+        signature: data.userInfo.sign,
       };
       yield put({
         type: 'saveCurrentUser',

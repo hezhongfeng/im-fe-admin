@@ -79,6 +79,20 @@ export default defineConfig({
               authority: ['admin'],
             },
             {
+              name: 'admin.right',
+              icon: 'table',
+              path: '/admin/right',
+              component: '@/pages/RightTableList',
+              authority: ['admin'],
+            },
+            {
+              name: 'admin.list',
+              icon: 'table',
+              path: '/admin/list',
+              component: '@/pages/ListTableList',
+              authority: ['admin'],
+            },
+            {
               component: '@/pages/404',
             },
           ],
