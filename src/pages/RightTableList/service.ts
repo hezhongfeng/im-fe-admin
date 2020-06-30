@@ -20,3 +20,11 @@ export async function queryRoles(params?: TableListParams) {
 export async function addRoles(params?: TableListItem) {
   return http.post('/api/v1/admin/rights', params);
 }
+
+export async function updateRoles(params: TableListItem) {
+  return http.put('/api/v1/admin/rights', params);
+}
+
+export async function removeRoles(params: TableListItem) {
+  return http.delete('/api/v1/admin/rights', { id: params.id });
+}

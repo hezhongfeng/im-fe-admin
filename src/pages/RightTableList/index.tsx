@@ -1,13 +1,14 @@
 import React, { useState, useRef } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, message } from 'antd';
+import { Button, message, Modal, Divider } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { SorterResult } from 'antd/es/table/interface';
 
 import CreateForm from './components/CreateForm';
+import UpdateForm from './components/UpdateForm';
 import { TableListItem } from './data';
-import { queryRoles, addRoles } from './service';
+import { queryRoles, addRoles, updateRoles, removeRoles } from './service';
 
 /**
  * 添加节点
@@ -28,29 +29,60 @@ const handleAdd = async (fields: TableListItem) => {
 };
 
 /**
- *  删除节点
- * @param selectedRows
+ * 更新节点
+ * @param fields
  */
-const handleRemove = async (selectedRows: TableListItem) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
+const handleUpdate = async (fields: TableListItem) => {
+  const hide = message.loading('正在更新');
   try {
-    // await removeRule({
-    //   key: selectedRows.map((row) => row.key),
-    // });
+    await updateRoles(fields);
     hide();
-    message.success('删除成功，即将刷新');
+    message.success('编辑成功');
     return true;
   } catch (error) {
     hide();
-    message.error('删除失败，请重试');
+    message.error('编辑失败请重试！');
     return false;
   }
+};
+
+/**
+ *  删除节点
+ * @param selectedRows
+ */
+const handleRemove = async (
+  selectedRows: TableListItem,
+  actionRef: React.MutableRefObject<ActionType | undefined>,
+) => {
+  Modal.confirm({
+    title: '删除权限',
+    content: '确定删除该权限吗？',
+    okText: '确认',
+    cancelText: '取消',
+    onOk: async () => {
+      const hide = message.loading('正在删除');
+      if (!selectedRows) return true;
+      try {
+        await removeRoles(selectedRows);
+        hide();
+        message.success('删除成功，即将刷新');
+        if (actionRef.current) {
+          actionRef.current.reloadAndRest();
+        }
+      } catch (error) {
+        hide();
+        message.error('删除失败，请重试');
+      }
+      return true;
+    },
+  });
 };
 
 const TableList: React.FC<{}> = () => {
   const [sorter, setSorter] = useState<string>('');
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
+  const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
+  const [current, setCurrent] = useState<Partial<TableListItem> | undefined>(undefined);
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<TableListItem>[] = [
     {
@@ -96,10 +128,19 @@ const TableList: React.FC<{}> = () => {
         <>
           <a
             onClick={() => {
-              handleRemove(record);
+              handleRemove(record, actionRef);
             }}
           >
             删除
+          </a>
+          <Divider type="vertical" />
+          <a
+            onClick={() => {
+              handleUpdateModalVisible(true);
+              setCurrent(record);
+            }}
+          >
+            编辑
           </a>
         </>
       ),
@@ -143,7 +184,7 @@ const TableList: React.FC<{}> = () => {
             if (success) {
               handleModalVisible(false);
               if (actionRef.current) {
-                actionRef.current.reload();
+                actionRef.current.reloadAndRest();
               }
             }
           }}
@@ -153,6 +194,22 @@ const TableList: React.FC<{}> = () => {
           rowSelection={{}}
         />
       </CreateForm>
+      <UpdateForm
+        onSubmit={async (value) => {
+          const success = await handleUpdate(value);
+          if (success) {
+            handleUpdateModalVisible(false);
+            if (actionRef.current) {
+              actionRef.current.reloadAndRest();
+            }
+          }
+        }}
+        onCancel={() => {
+          handleUpdateModalVisible(false);
+        }}
+        visible={updateModalVisible}
+        current={current}
+      />
     </PageHeaderWrapper>
   );
 };
