@@ -1,20 +1,20 @@
-# Ant Design Pro
+# IM FE Admin
 
-以 Ant Design Pro 为模板，查看管理 IM 的群组以及用户
+以 Ant Design Pro 为模板，IM 服务的管理端
 
-## Environment Prepare
+## 安装依赖
 
 ```bash
 yarn
 ```
 
-### Start project
+### 启动调试
 
 ```bash
-yarn start
+yarn dev
 ```
 
-### Build project
+### Build
 
 ```bash
 yarn build
@@ -272,10 +272,6 @@ const result = {
 
 ## 总体感受
 
-目前
+目前也照葫芦画瓢把基础功能都完成了，主要是学习认识 umi、pro 和 dva 之前的关系和各自的使用方式，文档写的不是很好，感觉不是一伙人在做一样，没有很好的结合起来。React Hook 的感觉和 Vue3.0 的 API 有一点点像，但是整体思路还不一样，毕竟这俩都没用真正的大规模的使用，尤其是针对复用的使用方式。TS 也快写成了 anyscript 稍微感觉有点麻烦，但是智能提示在多个接口之间传递数据还是很舒服的，可以很快速的发现一些拼写错误，但是感觉结合我们目前的开发测试方式，感觉提升不是很大。
 
-## TS 相关
-
-`React.FC`的使用目的，目前还没搞清楚，不过发现了一份相关的讨论
-
-[React.FC](https://github.com/facebook/create-react-app/pull/8177)
+以上都是我的真实感受，随着时间的推移，我的感受也会随之改变。

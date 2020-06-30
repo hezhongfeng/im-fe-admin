@@ -86,13 +86,6 @@ export default defineConfig({
               authority: ['admin'],
             },
             {
-              name: 'admin.list',
-              icon: 'table',
-              path: '/admin/list',
-              component: '@/pages/ListTableList',
-              authority: ['admin'],
-            },
-            {
               component: '@/pages/404',
             },
           ],

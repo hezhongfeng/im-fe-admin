@@ -15,7 +15,7 @@ export default (): React.ReactNode => (
   <PageHeaderWrapper>
     <Card>
       <Alert
-        message="im-fa-admin 现已发布，点击左侧菜单开始使用吧"
+        message="im-fe-admin 现已发布"
         type="success"
         showIcon
         banner
@@ -24,27 +24,9 @@ export default (): React.ReactNode => (
           marginBottom: 24,
         }}
       />
-      <Typography.Text strong>
-        <a target="_blank" rel="noopener noreferrer" href="https://pro.ant.design/docs/block">
-          基于 block 开发，快速构建标准页面
-        </a>
-      </Typography.Text>
-      <CodePreview> npm run ui</CodePreview>
-      <Typography.Text
-        strong
-        style={{
-          marginBottom: 12,
-        }}
-      >
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://pro.ant.design/docs/available-script#npm-run-fetchblocks"
-        >
-          获取全部区块
-        </a>
-      </Typography.Text>
-      <CodePreview> npm run fetch:blocks</CodePreview>
+      <Typography.Text strong>基于 Ant Design Pro 开发</Typography.Text>
+      <CodePreview> yarn </CodePreview>
+      <CodePreview> yarn dev</CodePreview>
     </Card>
   </PageHeaderWrapper>
 );
