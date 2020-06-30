@@ -110,6 +110,7 @@ const TableList: React.FC<{}> = () => {
       title: '描述',
       dataIndex: 'desc',
       valueType: 'textarea',
+      rules: [{ message: '请输入至少五个字符的描述！', min: 5 }],
       hideInSearch: true,
     },
     {
@@ -125,24 +126,28 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => (
-        <>
-          <a
+        <div>
+          <Button
+            disabled={['admin', 'login', 'speak'].some((item: string) => item === record.keyName)}
+            type="link"
             onClick={() => {
               handleRemove(record, actionRef);
             }}
           >
             删除
-          </a>
+          </Button>
           <Divider type="vertical" />
-          <a
+          <Button
+            disabled={['admin', 'login', 'speak'].some((item: string) => item === record.keyName)}
+            type="link"
             onClick={() => {
               handleUpdateModalVisible(true);
               setCurrent(record);
             }}
           >
             编辑
-          </a>
-        </>
+          </Button>
+        </div>
       ),
     },
   ];
