@@ -39,10 +39,10 @@ export default defineConfig({
     {
       path: '/',
       component: '@/layouts/SecurityLayout',
-      authority: ['admin'],
       routes: [
         {
           path: '/',
+          authority: ['admin'],
           redirect: '/admin/welcome',
         },
         {

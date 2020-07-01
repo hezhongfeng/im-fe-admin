@@ -1,4 +1,4 @@
-import { Effect, Reducer } from 'umi';
+import { Effect, Reducer, history } from 'umi';
 
 import { queryCurrent, query as queryUsers } from '@/services/user';
 
@@ -44,20 +44,31 @@ const UserModel: UserModelType = {
       });
     },
     *fetchCurrent(_, { call, put }) {
-      const data = yield call(queryCurrent);
+      try {
+        const data = yield call(queryCurrent);
 
-      const payload = {
-        name: data.userInfo.nickname,
-        avatar: data.userInfo.photo,
-        userid: data.userInfo.userId,
-        title: '',
-        group: '',
-        signature: data.userInfo.sign,
-      };
-      yield put({
-        type: 'saveCurrentUser',
-        payload,
-      });
+        if (!data) {
+          history.replace({
+            pathname: '/user/login',
+          });
+          return;
+        }
+
+        const payload = {
+          name: data.userInfo.nickname,
+          avatar: data.userInfo.photo,
+          userid: data.userInfo.userId,
+          title: '',
+          group: '',
+          signature: data.userInfo.sign,
+        };
+        yield put({
+          type: 'saveCurrentUser',
+          payload,
+        });
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 

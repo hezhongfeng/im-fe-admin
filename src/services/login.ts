@@ -9,3 +9,7 @@ export interface LoginParamsType {
 export async function fakeAccountLogin(params: LoginParamsType) {
   return http.post('/api/v1/login', params);
 }
+
+export async function fakeAccountLogout() {
+  return http.post('/api/v1/logout');
+}

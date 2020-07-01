@@ -39,11 +39,11 @@ const responseHandle = (response: any) => {
 };
 
 export default {
-  async get(url: string, params: any) {
+  async get(url: string, params: any = {}) {
     const response = await request(url, { params });
     return responseHandle(response);
   },
-  async post(url: string, params: any) {
+  async post(url: string, params: any = {}) {
     const response = await request(url, {
       method: 'POST',
       data: {
@@ -52,7 +52,7 @@ export default {
     });
     return responseHandle(response);
   },
-  async put(url: string, params: any) {
+  async put(url: string, params: any = {}) {
     const response = await request(url, {
       method: 'PUT',
       data: {
@@ -61,7 +61,7 @@ export default {
     });
     return responseHandle(response);
   },
-  async delete(url: string, params: any) {
+  async delete(url: string, params: any = {}) {
     const response = await request(url, {
       method: 'DELETE',
       data: {

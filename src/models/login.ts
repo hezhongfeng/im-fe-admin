@@ -1,6 +1,6 @@
 import { history, Reducer, Effect } from 'umi';
 
-import { fakeAccountLogin } from '@/services/login';
+import { fakeAccountLogin, fakeAccountLogout } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 
 export interface StateType {
@@ -49,6 +49,10 @@ const Model: LoginModelType = {
             });
             return;
           }
+          yield put({
+            type: 'changeLoginStatus',
+            payload: data,
+          });
         }
 
         // 登录成功且权限验证正确
@@ -62,7 +66,14 @@ const Model: LoginModelType = {
       }
     },
 
-    logout() {
+    *logout(action, { call, put }) {
+      yield call(fakeAccountLogout);
+      yield put({
+        type: 'changeLoginStatus',
+        payload: {
+          roles: [],
+        },
+      });
       history.replace({
         pathname: '/user/login',
       });
@@ -71,7 +82,8 @@ const Model: LoginModelType = {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      if (payload.data && payload.roles) {
+      console.log('payload', payload);
+      if (payload.roles) {
         setAuthority(payload.roles);
       }
 
