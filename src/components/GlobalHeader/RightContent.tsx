@@ -1,4 +1,3 @@
-import { Tag } from 'antd';
 import React from 'react';
 import { connect, ConnectProps } from 'umi';
 import { ConnectState } from '@/models/connect';
@@ -11,12 +10,6 @@ export interface GlobalHeaderRightProps extends Partial<ConnectProps> {
   layout: 'sidemenu' | 'topmenu';
 }
 
-const ENVTagColor = {
-  dev: 'orange',
-  test: 'green',
-  pre: '#87d068',
-};
-
 const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = (props) => {
   const { theme, layout } = props;
   let className = styles.right;
@@ -28,11 +21,6 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = (props) => {
   return (
     <div className={className}>
       <Avatar />
-      {REACT_APP_ENV && (
-        <span>
-          <Tag color={ENVTagColor[REACT_APP_ENV]}>{REACT_APP_ENV}</Tag>
-        </span>
-      )}
     </div>
   );
 };

@@ -82,7 +82,6 @@ const Model: LoginModelType = {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      console.log('payload', payload);
       if (payload.roles) {
         setAuthority(payload.roles);
       }
