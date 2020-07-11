@@ -8,7 +8,7 @@ import { SorterResult } from 'antd/es/table/interface';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
 import { TableListItem } from './data';
-import { queryRoles, addRoles, updateRoles, removeRoles } from './service';
+import { queryRights, addRights, updateRights, removeRights } from './service';
 
 /**
  * 添加节点
@@ -17,7 +17,7 @@ import { queryRoles, addRoles, updateRoles, removeRoles } from './service';
 const handleAdd = async (fields: TableListItem) => {
   const hide = message.loading('正在添加');
   try {
-    await addRoles({ ...fields });
+    await addRights({ ...fields });
     hide();
     message.success('添加成功');
     return true;
@@ -35,7 +35,7 @@ const handleAdd = async (fields: TableListItem) => {
 const handleUpdate = async (fields: TableListItem) => {
   const hide = message.loading('正在更新');
   try {
-    await updateRoles(fields);
+    await updateRights(fields);
     hide();
     message.success('编辑成功');
     return true;
@@ -63,7 +63,7 @@ const handleRemove = async (
       const hide = message.loading('正在删除');
       if (!selectedRows) return true;
       try {
-        await removeRoles(selectedRows);
+        await removeRights(selectedRows);
         hide();
         message.success('删除成功，即将刷新');
         if (actionRef.current) {
@@ -178,7 +178,7 @@ const TableList: React.FC<{}> = () => {
             已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项
           </div>
         )}
-        request={(params) => queryRoles(params)}
+        request={(params) => queryRights(params)}
         columns={columns}
         rowSelection={false}
       />

@@ -14,6 +14,7 @@ export interface TableListItem {
   rights: Array<{
     name: string;
     id: string;
+    keyName: string;
   }>;
 }
 

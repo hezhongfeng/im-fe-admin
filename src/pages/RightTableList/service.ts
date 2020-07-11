@@ -1,7 +1,7 @@
 import http from '@/utils/http';
 import { TableListParams, TableListItem } from './data';
 
-export async function queryRoles(params?: TableListParams) {
+export async function queryRights(params?: TableListParams) {
   const param = Object.assign(
     {
       pageNumber: params ? params.current : 1,
@@ -17,14 +17,14 @@ export async function queryRoles(params?: TableListParams) {
   };
 }
 
-export async function addRoles(params?: TableListItem) {
+export async function addRights(params?: TableListItem) {
   return http.post('/api/v1/admin/rights', params);
 }
 
-export async function updateRoles(params: TableListItem) {
+export async function updateRights(params: TableListItem) {
   return http.put('/api/v1/admin/rights', params);
 }
 
-export async function removeRoles(params: TableListItem) {
+export async function removeRights(params: TableListItem) {
   return http.delete('/api/v1/admin/rights', { id: params.id });
 }

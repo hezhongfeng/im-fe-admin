@@ -16,3 +16,7 @@ export async function queryRoles(params?: TableListParams) {
     success: true,
   };
 }
+
+export async function updateRolesRights(params: { id: string; rightIds: Array<string> }) {
+  return http.put('/api/v1/admin/roles-rights', params);
+}
