@@ -20,3 +20,12 @@ export async function queryRoles(params?: TableListParams) {
 export async function updateRolesRights(params: { id: string; rightIds: Array<string> }) {
   return http.put('/api/v1/admin/roles-rights', params);
 }
+
+export async function createRoles(params: {
+  name: string;
+  keyName: string;
+  desc: string;
+  rightIds: Array<string>;
+}) {
+  return http.post('/api/v1/admin/roles', params);
+}

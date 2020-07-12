@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { Button, message } from 'antd';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { SorterResult } from 'antd/es/table/interface';
 
@@ -8,11 +9,13 @@ import { TableListItem } from './data';
 import { queryRoles } from './service';
 import { queryRights } from '../RightTableList/service';
 import UpdateForm from './components/UpdateForm';
+import CreateForm from './components/CreateForm';
 
 const TableList: React.FC<{}> = () => {
   const [sorter, setSorter] = useState<string>('');
   const actionRef = useRef<ActionType>();
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
+  const [createModalVisible, handleCreateModalVisible] = useState<boolean>(false);
   const [current, setCurrent] = useState<TableListItem>();
   const [rights, setRights] = useState<Array<any>>([]);
 
@@ -105,12 +108,44 @@ const TableList: React.FC<{}> = () => {
             已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项
           </div>
         )}
+        toolBarRender={() => [
+          <Button
+            type="primary"
+            onClick={async () => {
+              const result: {
+                data: Array<any>;
+              } = await queryRights({
+                current: 1,
+                pageSize: 99,
+              });
+              setRights(result.data);
+              handleCreateModalVisible(true);
+            }}
+          >
+            <PlusOutlined /> 新建
+          </Button>,
+        ]}
         request={(params) => queryRoles(params)}
         columns={columns}
         rowSelection={false}
       />
+      <CreateForm
+        onSubmit={() => {
+          message.success('添加成功');
+          handleCreateModalVisible(false);
+          if (actionRef.current) {
+            actionRef.current.reloadAndRest();
+          }
+        }}
+        onCancel={() => {
+          handleCreateModalVisible(false);
+        }}
+        visible={createModalVisible}
+        rights={rights}
+      />
       <UpdateForm
         onSubmit={() => {
+          message.success('编辑成功');
           handleUpdateModalVisible(false);
           if (actionRef.current) {
             actionRef.current.reloadAndRest();
