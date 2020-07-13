@@ -1,12 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Popconfirm } from 'antd';
+import { Button, Divider, Popconfirm, message } from 'antd';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { SorterResult } from 'antd/es/table/interface';
 
 import { ListItemDataType } from './data';
-import { queryRoles } from './service';
+import { queryRoles, deleteRoles } from './service';
 import { queryRights } from '../RightTableList/service';
 import OperationModal from './components/OperationModal';
 
@@ -19,7 +19,19 @@ const TableList: React.FC<{}> = () => {
   const [rights, setRights] = useState<Array<any>>([]);
 
   const remove = (id: number) => {
-    console.log(id);
+    deleteRoles({ ids: [id] }).then(() => {
+      message.success('删除成功');
+      if (actionRef.current) {
+        actionRef.current.reloadAndRest();
+      }
+    });
+  };
+
+  const disabledRemove = (record: ListItemDataType) => {
+    if ([1, 2].includes(record.id)) {
+      return true;
+    }
+    return false;
   };
 
   const columns: ProColumns<ListItemDataType>[] = [
@@ -87,7 +99,9 @@ const TableList: React.FC<{}> = () => {
           </Button>
           <Divider type="vertical" />
           <Popconfirm title="是否要删除此行？" onConfirm={() => remove(record.id)}>
-            <a>删除</a>
+            <Button type="link" disabled={disabledRemove(record)}>
+              删除
+            </Button>
           </Popconfirm>
         </div>
       ),

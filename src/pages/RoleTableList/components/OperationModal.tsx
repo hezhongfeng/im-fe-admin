@@ -51,7 +51,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
         name: values.name,
         keyName: values.keyName,
         desc: values.desc,
-        rightIds: values.rightIds,
+        rightIds: values.rightIds || [],
       }).then(() => {
         message.success('编辑成功');
         onDone();
@@ -61,7 +61,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
         name: values.name,
         keyName: values.keyName,
         desc: values.desc,
-        rightIds: values.rightIds,
+        rightIds: values.rightId || [],
       })
         .then(() => {
           message.success('创建成功');

@@ -35,3 +35,7 @@ export async function createRoles(params: {
 }) {
   return http.post('/api/v1/admin/roles', params);
 }
+
+export async function deleteRoles(params: { ids: Array<number> }) {
+  return http.delete('/api/v1/admin/roles', params);
+}
