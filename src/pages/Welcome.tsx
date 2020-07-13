@@ -24,9 +24,12 @@ export default (): React.ReactNode => (
           marginBottom: 24,
         }}
       />
-      <Typography.Text strong>基于 Ant Design Pro 开发</Typography.Text>
+      <Typography.Text>基于 Ant Design Pro 开发</Typography.Text>
       <CodePreview> yarn </CodePreview>
       <CodePreview> yarn dev</CodePreview>
+      <Typography.Text strong>
+        请谨慎使用管理端，避免造成影响，可以新建角色和权限进行配置
+      </Typography.Text>
     </Card>
   </PageHeaderWrapper>
 );

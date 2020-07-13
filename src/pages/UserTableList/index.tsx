@@ -1,58 +1,13 @@
-import { Divider, message, Modal, Badge } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { SorterResult } from 'antd/es/table/interface';
 
 import { TableListItem } from './data';
-import { queryUsers, disabledUser, muteUser } from './service';
+import { queryUsers } from './service';
 import { queryRoles } from '../RoleTableList/service';
 import style from './style.less';
 import OperationModal from './components/OperationModal';
-
-/**
- *
- * 禁言用户
- * @param currentItem
- */
-const editAndDelete = (key: string, status: boolean, record: any, actionRef: any) => {
-  const title = key === 'disabled' ? '封禁状态' : '禁言状态';
-  let content = key === 'disabled' ? '封禁' : '禁言';
-  content = (status ? '' : '解除') + content;
-
-  Modal.confirm({
-    title,
-    content: `确定${content}该用户吗？`,
-    okText: '确认',
-    cancelText: '取消',
-    onOk: async () => {
-      const hide = message.loading('正在处理');
-      try {
-        if (key === 'disabled') {
-          await disabledUser({
-            disabled: status,
-            id: record.id,
-          });
-        } else {
-          await muteUser({
-            mute: status,
-            id: record.id,
-          });
-        }
-        hide();
-        message.success('成功，即将刷新');
-        if (actionRef.current) {
-          actionRef.current.reloadAndRest();
-        }
-        return true;
-      } catch (error) {
-        hide();
-        message.error('失败，请重试');
-        return false;
-      }
-    },
-  });
-};
 
 const TableList: React.FC<{}> = () => {
   const [sorter, setSorter] = useState<string>('');
@@ -108,56 +63,13 @@ const TableList: React.FC<{}> = () => {
       },
     },
     {
-      title: '状态',
-      dataIndex: 'disabled',
-      hideInForm: true,
-      filters: [],
-      render(_, record) {
-        if (record.userStatus.disabled) {
-          return (
-            <span>
-              <Badge status="error" />
-              已封禁
-            </span>
-          );
-        }
-        return (
-          <span>
-            <Badge status="success" />
-            未封禁
-          </span>
-        );
-      },
-    },
-    {
-      title: '禁言状态',
-      dataIndex: 'mute',
-      hideInForm: true,
-      filters: [],
-      render(_, record) {
-        if (record.userStatus.mute) {
-          return (
-            <span>
-              <Badge status="error" />
-              已禁言
-            </span>
-          );
-        }
-        return (
-          <span>
-            <Badge status="success" />
-            未禁言
-          </span>
-        );
-      },
-    },
-    {
       title: '创建时间',
       dataIndex: 'createdAt',
       sorter: true,
       valueType: 'dateTime',
       width: 180,
       hideInForm: true,
+      hideInSearch: true,
     },
     {
       title: '角色',
@@ -173,60 +85,14 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => {
-        const DisA: React.FC<{}> = () => {
-          return record.userStatus.disabled ? (
-            <a
-              onClick={() => {
-                editAndDelete('disabled', false, record, actionRef);
-              }}
-            >
-              解除封禁
-            </a>
-          ) : (
-            <a
-              onClick={() => {
-                editAndDelete('disabled', true, record, actionRef);
-              }}
-            >
-              封禁
-            </a>
-          );
-        };
-
-        const MuseA: React.FC<{}> = () => {
-          return record.userStatus.mute ? (
-            <a
-              onClick={() => {
-                editAndDelete('mute', false, record, actionRef);
-              }}
-            >
-              解除禁言
-            </a>
-          ) : (
-            <a
-              onClick={() => {
-                editAndDelete('mute', true, record, actionRef);
-              }}
-            >
-              禁言
-            </a>
-          );
-        };
-
         return (
-          <>
-            <DisA />
-            <Divider type="vertical" />
-            <MuseA />
-            <Divider type="vertical" />
-            <a
-              onClick={() => {
-                editRole(record);
-              }}
-            >
-              配置角色
-            </a>
-          </>
+          <a
+            onClick={() => {
+              editRole(record);
+            }}
+          >
+            配置角色
+          </a>
         );
       },
     },
@@ -258,7 +124,6 @@ const TableList: React.FC<{}> = () => {
         request={(params, sort) => queryUsers(params, sort)}
         columns={columns}
         rowSelection={false}
-        search={false}
       />
       <OperationModal
         onDone={() => {
