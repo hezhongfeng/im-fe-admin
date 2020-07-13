@@ -1,20 +1,18 @@
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, message, Divider, Popconfirm } from 'antd';
+import { Button, Divider, Popconfirm } from 'antd';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { SorterResult } from 'antd/es/table/interface';
 
 import { ListItemDataType } from './data';
 import { queryRoles } from './service';
 import { queryRights } from '../RightTableList/service';
-import CreateForm from './components/CreateForm';
 import OperationModal from './components/OperationModal';
 
 const TableList: React.FC<{}> = () => {
   const [sorter, setSorter] = useState<string>('');
   const actionRef = useRef<ActionType>();
-  const [createModalVisible, handleCreateModalVisible] = useState<boolean>(false);
   const [visible, setVisible] = useState<boolean>(false);
   const [current, setCurrent] = useState<Partial<ListItemDataType> | undefined>(undefined);
 
@@ -139,13 +137,6 @@ const TableList: React.FC<{}> = () => {
         rowSelection={false}
       />
       <OperationModal
-        onSubmit={() => {
-          message.success('添加成功');
-          handleCreateModalVisible(false);
-          if (actionRef.current) {
-            actionRef.current.reloadAndRest();
-          }
-        }}
         onDone={() => {
           setVisible(false);
           if (actionRef.current) {
@@ -158,20 +149,6 @@ const TableList: React.FC<{}> = () => {
         visible={visible}
         rights={rights}
         current={current}
-      />
-      <CreateForm
-        onSubmit={() => {
-          message.success('添加成功');
-          handleCreateModalVisible(false);
-          if (actionRef.current) {
-            actionRef.current.reloadAndRest();
-          }
-        }}
-        onCancel={() => {
-          handleCreateModalVisible(false);
-        }}
-        visible={createModalVisible}
-        rights={rights}
       />
     </PageHeaderWrapper>
   );

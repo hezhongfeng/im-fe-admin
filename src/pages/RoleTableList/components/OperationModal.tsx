@@ -1,14 +1,13 @@
 import React, { FC, useEffect } from 'react';
 import { Modal, Checkbox, Form, Input, message } from 'antd';
 import { ListItemDataType } from '../data.d';
-import { updateRoles } from '../service';
+import { updateRoles, createRoles } from '../service';
 
 interface OperationModalProps {
   visible: boolean;
   rights: Array<any>;
   current: Partial<ListItemDataType> | undefined;
   onDone: () => void;
-  onSubmit: (values: ListItemDataType) => void;
   onCancel: () => void;
 }
 
@@ -45,8 +44,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
   };
 
   const handleFinish = async (values: { [key: string]: any }) => {
-    // console.log(values);
-
+    // 更新
     if (current) {
       updateRoles({
         id: current.id ? current.id : 0,
@@ -58,8 +56,20 @@ const OperationModal: FC<OperationModalProps> = (props) => {
         message.success('编辑成功');
         onDone();
       });
-      // onSubmit();
-      // onSubmit(values as BasicListItemDataType);
+    } else {
+      createRoles({
+        name: values.name,
+        keyName: values.keyName,
+        desc: values.desc,
+        rightIds: values.rightIds,
+      })
+        .then(() => {
+          message.success('创建成功');
+          onDone();
+        })
+        .catch((data) => {
+          message.error(data.errorMessage);
+        });
     }
   };
 
