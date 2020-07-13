@@ -1,18 +1,15 @@
 export interface TableListItem {
-  key: number;
+  id: number;
   disabled?: boolean;
-  href: string;
   avatar: string;
   name: string;
-  owner: string;
   desc: string;
-  callNo: number;
-  status: number;
   updatedAt: Date;
   createdAt: Date;
   progress: number;
   mute?: boolean;
   roles: Array;
+  roleIds: Array<number>;
   userStatus: {
     disabled: boolean;
     mute: boolean;

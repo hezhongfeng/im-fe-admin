@@ -6,7 +6,9 @@ import { SorterResult } from 'antd/es/table/interface';
 
 import { TableListItem } from './data';
 import { queryUsers, disabledUser, muteUser } from './service';
+import { queryRoles } from '../RoleTableList/service';
 import style from './style.less';
+import OperationModal from './components/OperationModal';
 
 /**
  *
@@ -55,6 +57,19 @@ const editAndDelete = (key: string, status: boolean, record: any, actionRef: any
 const TableList: React.FC<{}> = () => {
   const [sorter, setSorter] = useState<string>('');
   const actionRef = useRef<ActionType>();
+  const [roles, setRoles] = useState<Array<any>>([]);
+  const [visible, setVisible] = useState<boolean>(false);
+  const [current, setCurrent] = useState<Partial<TableListItem> | undefined>(undefined);
+
+  const editRole = async (record: TableListItem) => {
+    const { data } = await queryRoles({
+      current: 1,
+      pageSize: 99,
+    });
+    setRoles(data);
+    setCurrent(record);
+    setVisible(true);
+  };
   const columns: ProColumns<TableListItem>[] = [
     {
       title: '用户名',
@@ -147,10 +162,10 @@ const TableList: React.FC<{}> = () => {
     {
       title: '角色',
       render(_, record) {
-        const roles = record.roles.map((role: { name: string; id: string }) => (
+        const roleNames = record.roles.map((role: { name: string; id: string }) => (
           <div key={role.id}>{role.name}</div>
         ));
-        return roles;
+        return roleNames;
       },
     },
     {
@@ -203,6 +218,14 @@ const TableList: React.FC<{}> = () => {
             <DisA />
             <Divider type="vertical" />
             <MuseA />
+            <Divider type="vertical" />
+            <a
+              onClick={() => {
+                editRole(record);
+              }}
+            >
+              配置角色
+            </a>
           </>
         );
       },
@@ -236,6 +259,20 @@ const TableList: React.FC<{}> = () => {
         columns={columns}
         rowSelection={false}
         search={false}
+      />
+      <OperationModal
+        onDone={() => {
+          setVisible(false);
+          if (actionRef.current) {
+            actionRef.current.reloadAndRest();
+          }
+        }}
+        onCancel={() => {
+          setVisible(false);
+        }}
+        visible={visible}
+        roles={roles}
+        current={current}
       />
     </PageHeaderWrapper>
   );

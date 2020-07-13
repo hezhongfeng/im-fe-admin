@@ -22,3 +22,7 @@ export async function disabledUser(params: any) {
 export async function muteUser(params: any) {
   return http.put('/api/v1/admin/users/mute', params);
 }
+
+export async function updateUserRoles(params: { id: number; roleIds: Array<number> }) {
+  return http.put('/api/v1/admin/users/roles', params);
+}
