@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Modal, Form, Checkbox } from 'antd';
-import { updateRolesRights } from '../service';
+import { updateRoles } from '../service';
 
 interface OperationModalProps {
   visible: boolean;
@@ -22,7 +22,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
   }, [props.visible]);
 
   const handleSubmit = async () => {
-    await updateRolesRights({
+    await updateRoles({
       id: current.id,
       rightIds: ids,
     });

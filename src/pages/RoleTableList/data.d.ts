@@ -1,16 +1,11 @@
-export interface TableListItem {
-  key: number;
-  disabled?: boolean;
-  href: string;
-  avatar: string;
+export interface ListItemDataType {
+  id: number;
   name: string;
-  owner: string;
+  keyName: string;
   desc: string;
-  callNo: number;
-  status: number;
   updatedAt: Date;
   createdAt: Date;
-  progress: number;
+  rightIds: Array<any>;
   rights: Array<{
     name: string;
     id: string;

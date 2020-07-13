@@ -1,25 +1,30 @@
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, message } from 'antd';
+import { Button, message, Divider, Popconfirm } from 'antd';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { SorterResult } from 'antd/es/table/interface';
 
-import { TableListItem } from './data';
+import { ListItemDataType } from './data';
 import { queryRoles } from './service';
 import { queryRights } from '../RightTableList/service';
-import UpdateForm from './components/UpdateForm';
 import CreateForm from './components/CreateForm';
+import OperationModal from './components/OperationModal';
 
 const TableList: React.FC<{}> = () => {
   const [sorter, setSorter] = useState<string>('');
   const actionRef = useRef<ActionType>();
-  const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [createModalVisible, handleCreateModalVisible] = useState<boolean>(false);
-  const [current, setCurrent] = useState<TableListItem>();
+  const [visible, setVisible] = useState<boolean>(false);
+  const [current, setCurrent] = useState<Partial<ListItemDataType> | undefined>(undefined);
+
   const [rights, setRights] = useState<Array<any>>([]);
 
-  const columns: ProColumns<TableListItem>[] = [
+  const remove = (id: number) => {
+    console.log(id);
+  };
+
+  const columns: ProColumns<ListItemDataType>[] = [
     {
       title: '角色名称',
       dataIndex: 'name',
@@ -77,11 +82,15 @@ const TableList: React.FC<{}> = () => {
               });
               setRights(result.data);
               setCurrent(record);
-              handleUpdateModalVisible(true);
+              setVisible(true);
             }}
           >
             编辑
           </Button>
+          <Divider type="vertical" />
+          <Popconfirm title="是否要删除此行？" onConfirm={() => remove(record.id)}>
+            <a>删除</a>
+          </Popconfirm>
         </div>
       ),
     },
@@ -89,13 +98,13 @@ const TableList: React.FC<{}> = () => {
 
   return (
     <PageHeaderWrapper title={false}>
-      <ProTable<TableListItem>
+      <ProTable<ListItemDataType>
         headerTitle="角色表格"
         actionRef={actionRef}
         search={false}
         rowKey="id"
         onChange={(_, _filter, _sorter) => {
-          const sorterResult = _sorter as SorterResult<TableListItem>;
+          const sorterResult = _sorter as SorterResult<ListItemDataType>;
           if (sorterResult.field) {
             setSorter(`${sorterResult.field}_${sorterResult.order}`);
           }
@@ -119,7 +128,7 @@ const TableList: React.FC<{}> = () => {
                 pageSize: 99,
               });
               setRights(result.data);
-              handleCreateModalVisible(true);
+              setVisible(true);
             }}
           >
             <PlusOutlined /> 新建
@@ -128,6 +137,27 @@ const TableList: React.FC<{}> = () => {
         request={(params) => queryRoles(params)}
         columns={columns}
         rowSelection={false}
+      />
+      <OperationModal
+        onSubmit={() => {
+          message.success('添加成功');
+          handleCreateModalVisible(false);
+          if (actionRef.current) {
+            actionRef.current.reloadAndRest();
+          }
+        }}
+        onDone={() => {
+          setVisible(false);
+          if (actionRef.current) {
+            actionRef.current.reloadAndRest();
+          }
+        }}
+        onCancel={() => {
+          setVisible(false);
+        }}
+        visible={visible}
+        rights={rights}
+        current={current}
       />
       <CreateForm
         onSubmit={() => {
@@ -141,21 +171,6 @@ const TableList: React.FC<{}> = () => {
           handleCreateModalVisible(false);
         }}
         visible={createModalVisible}
-        rights={rights}
-      />
-      <UpdateForm
-        onSubmit={() => {
-          message.success('编辑成功');
-          handleUpdateModalVisible(false);
-          if (actionRef.current) {
-            actionRef.current.reloadAndRest();
-          }
-        }}
-        onCancel={() => {
-          handleUpdateModalVisible(false);
-        }}
-        visible={updateModalVisible}
-        current={current}
         rights={rights}
       />
     </PageHeaderWrapper>
