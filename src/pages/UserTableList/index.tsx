@@ -99,7 +99,7 @@ const TableList: React.FC<{}> = () => {
   ];
 
   return (
-    <PageHeaderWrapper>
+    <PageHeaderWrapper title={false}>
       <ProTable<TableListItem>
         headerTitle="用户列表"
         actionRef={actionRef}
@@ -113,14 +113,6 @@ const TableList: React.FC<{}> = () => {
         params={{
           sorter,
         }}
-        tableAlertRender={({ selectedRowKeys, selectedRows }) => (
-          <div>
-            已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
-            <span>
-              服务调用次数总计 {selectedRows.reduce((pre, item) => pre + item.callNo, 0)} 万
-            </span>
-          </div>
-        )}
         request={(params, sort) => queryUsers(params, sort)}
         columns={columns}
         rowSelection={false}
