@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { SorterResult } from 'antd/es/table/interface';
-
+import style from './style.less';
 import { TableListItem } from './data';
 import { queryGroups, disabledGroup, muteGroup } from './service';
 
@@ -64,6 +64,16 @@ const TableList: React.FC<{}> = () => {
           message: '规则名称为必填项',
         },
       ],
+    },
+    {
+      title: '头像',
+      render(_, record) {
+        return (
+          <div className={style.avator}>
+            <img src={record.photo} alt="" />
+          </div>
+        );
+      },
     },
     {
       title: '描述',

@@ -2,7 +2,7 @@ export interface TableListItem {
   key: number;
   disabled?: boolean;
   href: string;
-  avatar: string;
+  photo: string;
   name: string;
   owner: string;
   desc: string;

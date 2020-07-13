@@ -23,15 +23,33 @@ main.ant-pro-basicLayout-content {
         height: 100%;
         margin: 0;
         .ant-pro-page-header-wrap-children-content {
-          flex-grow: 2;
+          display: flex;
+          flex-direction: column;
+          height: calc(100% - 50px);
+          margin: 12px 12px 0;
           .ant-pro-table {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 2;
             height: 100%;
+            overflow-y: auto;
+            .ant-card {
+              flex-grow: 2;
+              height: auto !important;
+            }
+            .ant-pro-table-search {
+              height: 60px !important;
+              padding-top: 12px;
+            }
             .ant-card-body {
               display: flex;
               flex-direction: column;
               height: 100%;
+              .ant-pro-table-toolbar {
+                flex-shrink: 0;
+              }
               .ant-table-wrapper {
-                flex-grow: 2;
+                height: calc(100% - 64px);
                 .ant-spin-nested-loading {
                   height: 100%;
                   .ant-spin-container {
