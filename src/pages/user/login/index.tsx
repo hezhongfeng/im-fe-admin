@@ -1,9 +1,4 @@
-import {
-  AlipayCircleOutlined,
-  TaobaoCircleOutlined,
-  WeiboCircleOutlined,
-  GithubOutlined,
-} from '@ant-design/icons';
+import { GithubOutlined } from '@ant-design/icons';
 import { Alert, Checkbox } from 'antd';
 import React, { useState } from 'react';
 import { connect, Dispatch } from 'umi';
@@ -85,10 +80,9 @@ const Login: React.FC<LoginProps> = (props) => {
         <Submit loading={submitting}>登录</Submit>
         <div className={styles.other}>
           其他登录方式
-          <AlipayCircleOutlined className={styles.icon} />
-          <TaobaoCircleOutlined className={styles.icon} />
-          <WeiboCircleOutlined className={styles.icon} />
-          <GithubOutlined className={styles.icon} />
+          <a href="/api/v1/passport/github">
+            <GithubOutlined className={styles.icon} src="/api/v1/passport/github" />
+          </a>
         </div>
       </LoginForm>
     </div>
