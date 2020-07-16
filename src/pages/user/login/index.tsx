@@ -1,4 +1,3 @@
-import { GithubOutlined } from '@ant-design/icons';
 import { Alert, Checkbox } from 'antd';
 import React, { useState } from 'react';
 import { connect, Dispatch } from 'umi';
@@ -78,12 +77,6 @@ const Login: React.FC<LoginProps> = (props) => {
           </a>
         </div>
         <Submit loading={submitting}>登录</Submit>
-        <div className={styles.other}>
-          其他登录方式
-          <a href="/api/v1/passport/github">
-            <GithubOutlined className={styles.icon} src="/api/v1/passport/github" />
-          </a>
-        </div>
       </LoginForm>
     </div>
   );
