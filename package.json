@@ -63,7 +63,7 @@
     "@ant-design/pro-table": "^2.3.5",
     "antd": "^4.4.1",
     "classnames": "^2.2.6",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.23",
     "moment": "^2.26.0",
     "omit.js": "^1.0.2",
     "path-to-regexp": "3.3.0",
